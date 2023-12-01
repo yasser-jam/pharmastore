@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 
 class BaseTextField extends StatelessWidget {
-  const BaseTextField({super.key});
+  const BaseTextField(this.label, this.update, {super.key});
+
+  final Function update;
+
+  final String label;
 
   @override
   build(ctx) {
-    return const SizedBox(
+    return SizedBox(
       height: 45,
       child: TextField(
+        onChanged: (value) {
+          update(value);
+        },
         decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: 'Scientific Name (en)',
+          border: const OutlineInputBorder(),
+          labelText: label,
         ),
       ),
     );

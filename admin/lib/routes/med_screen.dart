@@ -52,7 +52,7 @@ class MedScreen extends StatelessWidget {
               body: Container(
                   padding: const EdgeInsets.only(left: 30, right: 30),
                   alignment: Alignment.centerLeft,
-                  child: const CreateMedicineForm()),
+                  child: CreateMedicineForm()),
             ))
       ],
     ));

@@ -79,13 +79,13 @@ class _MedListState extends State<MedList> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      const Row(
+                      Row(
                         children: [
                           Expanded(
-                            child: BaseTextField(),
+                            child: BaseTextField('Search...', () {}),
                           ),
-                          SizedBox(width: 20),
-                          Expanded(
+                          const SizedBox(width: 20),
+                          const Expanded(
                             child: BaseSelect(),
                           ),
                         ],
