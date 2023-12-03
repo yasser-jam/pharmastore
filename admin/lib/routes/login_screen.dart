@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:html';
-import 'package:project/routes/med_list.dart';
 import 'package:project/routes/med_screen.dart';
+import 'package:project/routes/add_med_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -29,7 +29,7 @@ class LoginScreen extends StatelessWidget {
 
       Navigator.push(
         ctx,
-        MaterialPageRoute(builder: (context) => MedList()),
+        MaterialPageRoute(builder: (context) => MedScreen()),
       );
     } finally {}
   }
@@ -102,7 +102,7 @@ class LoginScreen extends StatelessWidget {
                       primary: const Color.fromARGB(255, 44, 235, 241)),
                   onPressed: () {
                     login(ctx);
-                    // Navigator.of(ctx).pushNamed(MedScreen.route);
+                    // Navigator.of(ctx).pushNamed(AddMedScreen.route);
                   },
                   child: const Text(
                     'Log-In',

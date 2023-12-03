@@ -2,8 +2,8 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:project/routes/login_screen.dart';
+import 'package:project/routes/add_med_screen.dart';
 import 'package:project/routes/med_screen.dart';
-import 'package:project/routes/med_list.dart';
 import 'package:project/routes/orders_screen.dart';
 
 /// Flutter code sample for [AppBar].
@@ -27,14 +27,14 @@ class PharmaStore extends StatelessWidget {
       hasAccessToken = true;
     }
 
-    var initialRoute = hasAccessToken ? MedList.route : LoginScreen.route;
+    var initialRoute = hasAccessToken ? MedScreen.route : LoginScreen.route;
 
     return MaterialApp(
       initialRoute: initialRoute,
       routes: {
         LoginScreen.route: (ctx) => LoginScreen(),
-        MedScreen.route: (ctx) => const MedScreen(),
-        MedList.route: (ctx) => MedList(),
+        AddMedScreen.route: (ctx) => const AddMedScreen(),
+        MedScreen.route: (ctx) => MedScreen(),
         OrdersScreen.route: (ctx) => OrdersScreen()
       },
     );

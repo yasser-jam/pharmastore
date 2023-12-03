@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:project/base/base_button.dart';
 import 'package:project/base/base_select.dart';
 import 'package:project/base/base_text_field.dart';
-import 'package:project/routes/med_list.dart';
+import 'package:project/routes/med_screen.dart';
 import 'package:http/http.dart' as http;
 
 class CreateMedicineForm extends StatefulWidget {
@@ -53,7 +53,7 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
       // push router to medicines page
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => MedList()),
+        MaterialPageRoute(builder: (context) => MedScreen()),
       );
     } finally {
       setState(() {

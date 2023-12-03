@@ -1,60 +1,105 @@
 import 'package:flutter/material.dart';
-import 'package:project/base/drawer/drawer_item.dart';
-import 'package:project/medicine/create_medicine_form.dart';
-
+import 'package:project/base/base_select.dart';
+import 'package:project/base/base_table.dart';
+import 'package:project/base/base_text_field.dart';
 import 'package:project/base/drawer/drawer_list.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
-class MedScreen extends StatelessWidget {
+class MedScreen extends StatefulWidget {
   const MedScreen({super.key});
 
-  static const String route = '/add-medicine';
+  static const String route = '/med-list';
+
+  @override
+  State<MedScreen> createState() {
+    return _MedScreenState();
+  }
+}
+
+class _MedScreenState extends State<MedScreen> {
+  var medicines = [];
+
+  var loading = true;
+
+  @override
+  void initState() {
+    getMedicines();
+  }
+
+  dynamic getMedicines() async {
+    try {
+      var url = Uri.http('localhost:8000', 'api/medcines');
+
+      var response = await http.get(url);
+
+      var resBody = jsonDecode(response.body) as Map<String, dynamic>;
+
+      medicines = resBody['data'];
+
+      setState(() {
+        loading = false;
+      });
+
+      print(medicines);
+
+      return medicines;
+    } finally {}
+  }
 
   @override
   build(ctx) {
     return Scaffold(
-        body: Row(
-      children: [
-        // Expanded(
-        //     flex: 1,
-        //     child: Container(
-        //         color: const Color.fromARGB(255, 238, 238, 238),
-        //         child: Column(children: [
-        //           const SizedBox(height: 30),
-        //           TextButton.icon(
-        //             icon: const Icon(Icons.add),
-        //             style: TextButton.styleFrom(
-        //               primary: const Color.fromARGB(255, 26, 144, 148),
-        //               textStyle: const TextStyle(
-        //                 fontSize: 15,
-        //               ),
-        //             ),
-        //             onPressed: () {},
-        //             label: const Text('Add Medicine'),
-        //           ),
-        //         ]))),
-        Expanded(
-            flex: 1,
-            child: Container(
-                color: const Color.fromRGBO(8, 46, 47, 1),
-                child: const DrawerList())),
-        Expanded(
+      body: Row(
+        children: [
+          Expanded(
+              flex: 1,
+              child: Container(
+                  color: const Color.fromRGBO(8, 46, 47, 1),
+                  child: const DrawerList())),
+          Expanded(
             flex: 4,
             child: Scaffold(
-              // appBar: AppBar(
-              //   title: const Text('Medical Bay'),
-              //   titleTextStyle: const TextStyle(
-              //       fontSize: 25,
-              //       fontFamily: 'Roboto',
-              //       color: Color.fromARGB(255, 26, 144, 148)),
-              //   // backgroundColor: const Color.fromARGB(255, 26, 144, 148),
-              //   backgroundColor: Colors.white,
-              // ),
               body: Container(
+                  width: double.infinity,
                   padding: const EdgeInsets.only(left: 30, right: 30),
-                  alignment: Alignment.centerLeft,
-                  child: CreateMedicineForm()),
-            ))
-      ],
-    ));
+                  alignment: Alignment.topLeft,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 20),
+                      const SizedBox(
+                        child: Text(
+                          'Medicines',
+                          style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.w600,
+                              color: Color.fromARGB(255, 26, 144, 148)),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: BaseTextField('Search...', () {}),
+                          ),
+                          const SizedBox(width: 20),
+                          const Expanded(
+                            child: BaseSelect(),
+                          ),
+                        ],
+                      ),
+                      Expanded(
+                        child:
+                            loading ? Text('loading...') : BaseTable(medicines),
+                      )
+                    ],
+                  )),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
