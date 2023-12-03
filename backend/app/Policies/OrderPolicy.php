@@ -21,23 +21,15 @@ class OrderPolicy
      */
     public function view(User $user, Order $order): bool
     {
-        return $user->id==$order->user_id;
+        return $user->id==$order->user_id || $user->isStoreOwner;
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function placeOrder(User $user): bool
     {
-        return !$user->isStoreOwner;
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Order $order): bool
-    {
-        return $user->id==$order->user_id;
+        return true;
     }
 
     /**
@@ -47,20 +39,13 @@ class OrderPolicy
     {
         return $user->id==$order->user_id;
     }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Order $order): bool
+    public function updateStatus(User $user, Order $order): bool
     {
-        return $user->id==$order->user_id;
+        return $user->isStoreOwner;
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Order $order): bool
+    public function updateBillingStatus(User $user, Order $order): bool
     {
-        return $user->id==$order->user_id;
+        return $user->isStoreOwner;
     }
 }

@@ -2,14 +2,11 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Medcine;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class StoreMedcineRequest extends FormRequest
+class billingStatusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,22 +24,13 @@ class StoreMedcineRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "sciName"=>['required'],
-            "useName"=>['required','unique:medcines'],
-            "companyName"=>['required'],
-            "qtn"=>['required'],
-            "expiredDate"=>['required'],
-            "price"=> ['required'],
-           "description"=> ['sometimes'],
-           "category_id"=>['required','exists:categories,id']
+            "status"=>['required','in:paid,unpaid']
         ];
     }
-     // validation error handeling
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
-            'errors' => $validator->errors(),
-            'message' => 'The given data is invalid.',
+            'errors' => $validator->errors()
         ], 422));
     }
 }
