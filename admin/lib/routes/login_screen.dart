@@ -29,7 +29,9 @@ class LoginScreen extends StatelessWidget {
 
       Navigator.push(
         ctx,
-        MaterialPageRoute(builder: (context) => MedScreen()),
+        MaterialPageRoute(
+          builder: (context) => const MedScreen(),
+        ),
       );
     } finally {}
   }

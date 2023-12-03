@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:project/base/base_select.dart';
-import 'package:project/base/base_table.dart';
 import 'package:project/base/base_text_field.dart';
 import 'package:project/base/drawer/drawer_list.dart';
+import 'package:project/medicine/medicine_table.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -91,8 +91,9 @@ class _MedScreenState extends State<MedScreen> {
                         ],
                       ),
                       Expanded(
-                        child:
-                            loading ? Text('loading...') : BaseTable(medicines),
+                        child: loading
+                            ? Text('loading...')
+                            : MedicineTable(medicines),
                       )
                     ],
                   )),

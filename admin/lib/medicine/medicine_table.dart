@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-class BaseTable extends StatelessWidget {
-  const BaseTable(this.data, {super.key});
+class MedicineTable extends StatelessWidget {
+  const MedicineTable(this.data, {super.key});
 
   final List data;
+
   dynamic getRows() {
     List<DataRow> rows = [];
     data.forEach((item) {
@@ -73,14 +74,19 @@ class BaseTable extends StatelessWidget {
     getRows();
     return SizedBox(
       width: double.infinity,
-      child: DataTable(columns: const [
-        DataColumn(label: Text('Name')),
-        // DataColumn(label: Text('Categories')),
-        DataColumn(label: Text('Quantity')),
-        DataColumn(label: Text('Price')),
-        DataColumn(label: Text('Expiration Date')),
-        DataColumn(label: Text('')),
-      ], rows: getRows()),
+      child: ListView(children: [
+        DataTable(
+          columns: const [
+            DataColumn(label: Text('Name')),
+            // DataColumn(label: Text('Categories')),
+            DataColumn(label: Text('Quantity')),
+            DataColumn(label: Text('Price')),
+            DataColumn(label: Text('Expiration Date')),
+            DataColumn(label: Text('')),
+          ],
+          rows: getRows(),
+        ),
+      ]),
     );
   }
 }
