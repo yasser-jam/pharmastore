@@ -27,12 +27,7 @@ class LoginScreen extends StatelessWidget {
       // setting access token in cookie
       document.cookie = "access_token=" + resBody['access_token'];
 
-      Navigator.push(
-        ctx,
-        MaterialPageRoute(
-          builder: (context) => const MedScreen(),
-        ),
-      );
+      Navigator.pushNamed(ctx, '/med-list');
     } finally {}
   }
 

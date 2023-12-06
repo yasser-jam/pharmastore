@@ -18,7 +18,7 @@ return new class extends Migration
            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->string('companyName');
             $table->integer("qtn");
-            $table->date("expiredDate");
+            $table->string("expiredDate");
             $table->integer("price");
             $table->boolean("show")->default(false);
             $table->text("description")->nullable();

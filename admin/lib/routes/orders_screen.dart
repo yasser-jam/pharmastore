@@ -2,14 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:project/base/base_select.dart';
 import 'package:project/base/base_text_field.dart';
 import 'package:project/base/drawer/drawer_list.dart';
-import 'package:project/base/base_table.dart';
 import 'package:project/orders/orders_table.dart';
 
-class OrdersScreen extends StatelessWidget {
+class OrdersScreen extends StatefulWidget {
   OrdersScreen({super.key});
 
   static const String route = '/orders';
 
+  @override
+  State createState() {
+    return OrdersScreenState();
+  }
+}
+
+class OrdersScreenState extends State<OrdersScreen> {
   var loading = false;
 
   var orders = [
