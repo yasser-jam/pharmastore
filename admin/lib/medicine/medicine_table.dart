@@ -4,22 +4,18 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class MedicineTable extends StatefulWidget {
-  const MedicineTable(this.refresh, {super.key, required this.data});
+  MedicineTable(this.refresh, {super.key, required this.data});
 
   final data;
   final Function refresh;
 
   @override
   State createState() {
-    return MedicineTableState(data);
+    return MedicineTableState();
   }
 }
 
 class MedicineTableState extends State<MedicineTable> {
-  MedicineTableState(this.data);
-
-  final data;
-
   var loading = false;
 
   dynamic delete(id) async {
@@ -49,7 +45,7 @@ class MedicineTableState extends State<MedicineTable> {
 
   dynamic getRows() {
     List<DataRow> rows = [];
-    data.forEach((item) {
+    widget.data.forEach((item) {
       rows.add(
         DataRow(
           cells: [

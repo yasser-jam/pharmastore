@@ -203,10 +203,10 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
         ],
       ),
       const SizedBox(height: 30),
-      const Row(
+      Row(
         mainAxisSize: MainAxisSize.max,
         children: [
-          Expanded(child: BaseSelect()),
+          Expanded(child: BaseSelect(() {})),
         ],
       ),
       const SizedBox(height: 50),

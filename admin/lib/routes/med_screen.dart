@@ -22,18 +22,32 @@ class MedScreen extends StatefulWidget {
 class _MedScreenState extends State<MedScreen> {
   var medicines = [];
 
+  var searchText = '';
   var loading = false;
 
   @override
   void initState() {
-    getMedicines();
+    getMedicines(search: '', catId: null);
   }
 
-  void getMedicines() async {
+  void search(val) async {
     try {
       loading = true;
 
-      var url = Uri.http('localhost:8000', 'api/medcines');
+      getMedicines(search: val, catId: null);
+    } finally {}
+  }
+
+  void getMedicines({catId, search}) async {
+    try {
+      loading = true;
+
+      Map<String, String> queryParameters = {
+        'useName[like]': search ?? '',
+        'category_id[eq]': catId ?? '',
+      };
+
+      var url = Uri.http('localhost:8000', 'api/medcines', queryParameters);
 
       var response = await http.get(url, headers: {
         'Authorization': 'Bearer ' + document.cookie!.split('=')[1]
@@ -43,6 +57,8 @@ class _MedScreenState extends State<MedScreen> {
 
       setState(() {
         medicines = [...resBody['data']];
+
+        print(medicines);
         loading = false;
       });
     } finally {}
@@ -83,11 +99,11 @@ class _MedScreenState extends State<MedScreen> {
                       Row(
                         children: [
                           Expanded(
-                            child: BaseTextField('Search...', () {}),
+                            child: BaseTextField('Search...', search),
                           ),
                           const SizedBox(width: 20),
-                          const Expanded(
-                            child: BaseSelect(),
+                          Expanded(
+                            child: BaseSelect(getMedicines),
                           ),
                         ],
                       ),

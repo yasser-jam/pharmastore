@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 
 class BaseSelect extends StatefulWidget {
-  const BaseSelect({super.key});
+  const BaseSelect(this.refresh, {super.key});
+
+  final Function refresh;
+
   @override
   State<BaseSelect> createState() {
-    return _BaseTextFieldState();
+    return _BaseSelectState();
   }
 }
 
-class _BaseTextFieldState extends State<BaseSelect> {
-  var _dropdownValue = 'child-1';
+class _BaseSelectState extends State<BaseSelect> {
+  var _dropdownValue = '';
 
   void dropdownCallback(String? selectedValue) {
     if (selectedValue is String) {
-      print(selectedValue);
       setState(() {
         _dropdownValue = selectedValue;
       });
+      widget.refresh(catId: selectedValue);
     }
   }
 
@@ -30,9 +33,11 @@ class _BaseTextFieldState extends State<BaseSelect> {
         child: DropdownButton(
           padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
           items: const [
-            DropdownMenuItem(value: 'child-1', child: Text('child-1')),
-            DropdownMenuItem(value: 'child-2', child: Text('child-2')),
-            DropdownMenuItem(value: 'child-3', child: Text('child-3')),
+            DropdownMenuItem(value: '1', child: Text('Pain Reliever')),
+            DropdownMenuItem(value: '2', child: Text('Stimulant')),
+            DropdownMenuItem(value: '3', child: Text('Stimulant')),
+            DropdownMenuItem(value: '4', child: Text('Antibiotic')),
+            DropdownMenuItem(value: '', child: Text('All')),
           ],
           onChanged: dropdownCallback,
           value: _dropdownValue,
