@@ -23,10 +23,10 @@ class _OrdersTableState extends State<OrdersTable> {
         rows.add(
           DataRow(
             cells: [
-              const DataCell(
+              DataCell(
                 Text(
-                  '5 items',
-                  style: TextStyle(
+                  item['items'].length.toString() + ' item',
+                  style: const TextStyle(
                     fontWeight: FontWeight.w800,
                     color: Color.fromARGB(255, 26, 144, 148),
                     fontSize: 16,
