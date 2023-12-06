@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:project/base/base_select.dart';
 import 'package:project/base/base_text_field.dart';
@@ -20,30 +22,29 @@ class MedScreen extends StatefulWidget {
 class _MedScreenState extends State<MedScreen> {
   var medicines = [];
 
-  var loading = true;
+  var loading = false;
 
   @override
   void initState() {
     getMedicines();
   }
 
-  dynamic getMedicines() async {
+  void getMedicines() async {
     try {
+      loading = true;
+
       var url = Uri.http('localhost:8000', 'api/medcines');
 
-      var response = await http.get(url);
+      var response = await http.get(url, headers: {
+        'Authorization': 'Bearer ' + document.cookie!.split('=')[1]
+      });
 
       var resBody = jsonDecode(response.body) as Map<String, dynamic>;
 
-      medicines = resBody['data'];
-
       setState(() {
+        medicines = [...resBody['data']];
         loading = false;
       });
-
-      print(medicines);
-
-      return medicines;
     } finally {}
   }
 
@@ -92,8 +93,8 @@ class _MedScreenState extends State<MedScreen> {
                       ),
                       Expanded(
                         child: loading
-                            ? Text('loading...')
-                            : MedicineTable(medicines),
+                            ? Text('loading table...')
+                            : MedicineTable(data: medicines, getMedicines),
                       )
                     ],
                   )),

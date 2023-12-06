@@ -1,9 +1,51 @@
+import 'dart:html';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
-class MedicineTable extends StatelessWidget {
-  const MedicineTable(this.data, {super.key});
+class MedicineTable extends StatefulWidget {
+  const MedicineTable(this.refresh, {super.key, required this.data});
 
-  final List data;
+  final data;
+  final Function refresh;
+
+  @override
+  State createState() {
+    return MedicineTableState(data);
+  }
+}
+
+class MedicineTableState extends State<MedicineTable> {
+  MedicineTableState(this.data);
+
+  final data;
+
+  var loading = false;
+
+  dynamic delete(id) async {
+    try {
+      var url = Uri.http('localhost:8000', 'api/medcines/' + id);
+
+      // start loader
+      setState(() {
+        loading = true;
+      });
+
+      var response = await http.delete(url, headers: {
+        'Authorization': 'Bearer ' + document.cookie!.split('=')[1]
+      });
+
+      var resBody = jsonDecode(response.body) as Map<String, dynamic>;
+
+      setState(() {
+        widget.refresh();
+
+        getRows();
+
+        loading = false;
+      });
+    } finally {}
+  }
 
   dynamic getRows() {
     List<DataRow> rows = [];
@@ -57,14 +99,15 @@ class MedicineTable extends StatelessWidget {
                 icon: const Icon(Icons.delete),
                 color: Colors.red[400],
                 iconSize: 20,
-                onPressed: () {},
+                onPressed: () {
+                  delete(item['id'].toString());
+                },
               ),
             ])),
           ],
         ),
       );
     });
-    print(rows);
 
     return rows;
   }
@@ -72,21 +115,23 @@ class MedicineTable extends StatelessWidget {
   @override
   build(ctx) {
     getRows();
-    return SizedBox(
-      width: double.infinity,
-      child: ListView(children: [
-        DataTable(
-          columns: const [
-            DataColumn(label: Text('Name')),
-            // DataColumn(label: Text('Categories')),
-            DataColumn(label: Text('Quantity')),
-            DataColumn(label: Text('Price')),
-            DataColumn(label: Text('Expiration Date')),
-            DataColumn(label: Text('')),
-          ],
-          rows: getRows(),
-        ),
-      ]),
-    );
+    return loading
+        ? Text('loading...')
+        : SizedBox(
+            width: double.infinity,
+            child: ListView(children: [
+              DataTable(
+                columns: const [
+                  DataColumn(label: Text('Name')),
+                  // DataColumn(label: Text('Categories')),
+                  DataColumn(label: Text('Quantity')),
+                  DataColumn(label: Text('Price')),
+                  DataColumn(label: Text('Expiration Date')),
+                  DataColumn(label: Text('')),
+                ],
+                rows: getRows(),
+              ),
+            ]),
+          );
   }
 }
