@@ -44,7 +44,9 @@ class _OrdersTableState extends State<OrdersTable> {
               ),
               DataCell(
                 Chip(
-                  backgroundColor: Color.fromARGB(255, 26, 144, 148),
+                  backgroundColor: item['billingstatus'] == 'paid'
+                      ? Color.fromARGB(255, 26, 144, 148)
+                      : Color.fromARGB(255, 226, 170, 85),
                   label: Text(
                     item['billingstatus'],
                     style: TextStyle(color: Colors.white),
