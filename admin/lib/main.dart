@@ -5,6 +5,7 @@ import 'package:project/routes/login_screen.dart';
 import 'package:project/routes/add_med_screen.dart';
 import 'package:project/routes/med_screen.dart';
 import 'package:project/routes/orders_screen.dart';
+import 'package:project/routes/order_details_screen.dart';
 
 /// Flutter code sample for [AppBar].
 
@@ -35,7 +36,8 @@ class PharmaStore extends StatelessWidget {
         LoginScreen.route: (ctx) => LoginScreen(),
         AddMedScreen.route: (ctx) => const AddMedScreen(),
         MedScreen.route: (ctx) => MedScreen(),
-        OrdersScreen.route: (ctx) => OrdersScreen()
+        OrdersScreen.route: (ctx) => OrdersScreen(),
+        OrderDetailsScreen.route: (ctx) => OrderDetailsScreen(null)
       },
     );
   }

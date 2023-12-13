@@ -58,7 +58,6 @@ class _MedScreenState extends State<MedScreen> {
       setState(() {
         medicines = [...resBody['data']];
 
-        print(medicines);
         loading = false;
       });
     } finally {}

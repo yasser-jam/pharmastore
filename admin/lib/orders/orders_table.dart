@@ -1,24 +1,67 @@
+import 'dart:convert';
+import 'dart:html';
 import 'package:flutter/material.dart';
 
+import 'package:http/http.dart' as http;
+
 class OrdersTable extends StatefulWidget {
-  const OrdersTable({super.key, required this.data});
+  const OrdersTable({super.key, required this.data, required this.callback});
 
   final data;
+  final Function callback;
 
   @override
   State<OrdersTable> createState() {
-    return _OrdersTableState(data: data);
+    return _OrdersTableState();
   }
 }
 
 class _OrdersTableState extends State<OrdersTable> {
-  _OrdersTableState({required this.data});
+  _OrdersTableState();
 
-  final data;
+  void updatePayment(status, id) async {
+    try {
+      var url = Uri.http('localhost:8000', 'api/billingStatus/$id');
+      var response = await http.patch(url,
+          body: jsonEncode({"status": status == 'paid' ? 'unpaid' : 'paid'}),
+          headers: {
+            'Authorization': 'Bearer ' + document.cookie!.split('=')[1],
+            'Content-type': 'application/json'
+          });
+
+      // update table
+      setState(() async {
+        await widget.callback();
+      });
+    } finally {}
+  }
+
+  void updateStatus(status, id) async {
+    try {
+      var url = Uri.http('localhost:8000', 'api/orderStatus/$id');
+      var response = await http.patch(url,
+          body: jsonEncode({
+            'status': status == 'preparing'
+                ? 'sent'
+                : status == 'sent'
+                    ? 'received'
+                    : 'preparing'
+          }),
+          headers: {
+            'Authorization': 'Bearer ' + document.cookie!.split('=')[1],
+            'Content-type': 'application/json'
+          });
+
+      // update table
+      setState(() async {
+        await widget.callback();
+      });
+    } finally {}
+  }
 
   dynamic getRows() {
     List<DataRow> rows = [];
-    data.forEach(
+    widget.data.forEach(
       (item) {
         rows.add(
           DataRow(
@@ -34,8 +77,15 @@ class _OrdersTableState extends State<OrdersTable> {
                 ),
               ),
               DataCell(
+                onTap: () {
+                  updateStatus(item['status'], item['id']);
+                },
                 Chip(
-                  backgroundColor: Color.fromARGB(255, 219, 216, 110),
+                  backgroundColor: item['status'] == 'sent'
+                      ? Color.fromARGB(255, 219, 216, 110)
+                      : item['status'] == 'received'
+                          ? Color.fromARGB(255, 26, 144, 148)
+                          : Color.fromARGB(255, 145, 125, 235),
                   label: Text(
                     item['status'],
                     style: const TextStyle(color: Colors.white),
@@ -43,6 +93,9 @@ class _OrdersTableState extends State<OrdersTable> {
                 ),
               ),
               DataCell(
+                onTap: () {
+                  updatePayment(item['billingstatus'], item['id']);
+                },
                 Chip(
                   backgroundColor: item['billingstatus'] == 'paid'
                       ? Color.fromARGB(255, 26, 144, 148)
@@ -56,13 +109,12 @@ class _OrdersTableState extends State<OrdersTable> {
               DataCell(
                 Row(
                   children: [
-                    IconButton.filledTonal(
-                      icon: const Icon(Icons.check),
-                      color: Colors.green[400],
-                      iconSize: 20,
-                      splashRadius: 20,
-                      onPressed: () {},
-                    ),
+                    // IconButton.filledTonal(
+                    //     icon: const Icon(Icons.check),
+                    //     color: Colors.blue,
+                    //     iconSize: 20,
+                    //     splashRadius: 20,
+                    //     onPressed: () {}),
                     IconButton.filledTonal(
                       icon: const Icon(Icons.delete),
                       color: Colors.red[400],

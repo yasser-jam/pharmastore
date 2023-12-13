@@ -89,12 +89,14 @@ class MedicineTableState extends State<MedicineTable> {
                 icon: const Icon(Icons.edit),
                 color: Colors.blue[400],
                 iconSize: 20,
+                splashRadius: 20,
                 onPressed: () {},
               ),
               IconButton.filledTonal(
                 icon: const Icon(Icons.delete),
                 color: Colors.red[400],
                 iconSize: 20,
+                splashRadius: 20,
                 onPressed: () {
                   delete(item['id'].toString());
                 },

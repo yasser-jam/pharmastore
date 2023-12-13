@@ -7,26 +7,23 @@ import 'package:project/base/base_text_field.dart';
 import 'package:project/base/drawer/drawer_list.dart';
 import 'package:project/orders/orders_table.dart';
 
-class OrdersScreen extends StatefulWidget {
-  OrdersScreen({super.key});
+class OrderDetailsScreen extends StatefulWidget {
+  OrderDetailsScreen(this.order, {super.key});
 
-  static const String route = '/orders';
+  static const String route = '/orders/details';
+
+  final order;
 
   @override
   State createState() {
-    return OrdersScreenState();
+    return OrderDetailsScreenState();
   }
 }
 
-class OrdersScreenState extends State<OrdersScreen> {
+class OrderDetailsScreenState extends State<OrderDetailsScreen> {
   var loading = false;
 
   var orders = [];
-
-  @override
-  void initState() {
-    getOrders();
-  }
 
   void getOrders() async {
     try {
@@ -49,6 +46,11 @@ class OrdersScreenState extends State<OrdersScreen> {
 
   @override
   build(ctx) {
+    // if we haven't selected order => return to the orders page
+    if (!widget.order?.id) {
+      Navigator.pushNamed(ctx, '/orders');
+    }
+
     return Scaffold(
       body: Row(
         children: [
@@ -73,7 +75,7 @@ class OrdersScreenState extends State<OrdersScreen> {
                     const SizedBox(height: 20),
                     const SizedBox(
                       child: Text(
-                        'Orders',
+                        'Order Details',
                         style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.w600,
@@ -82,10 +84,35 @@ class OrdersScreenState extends State<OrdersScreen> {
                     ),
                     const SizedBox(height: 20),
                     Expanded(
-                      child: loading
-                          ? Text('loading...')
-                          : OrdersTable(data: orders, callback: getOrders),
-                    )
+                        child: loading
+                            ? Text('loading...')
+                            : Row(
+                                children: [
+                                  Expanded(
+                                      child:
+                                          BaseTextField('Order Status', () {})),
+                                  Expanded(
+                                      child: BaseTextField(
+                                          'Order Billing Status', () {})),
+                                  SizedBox(height: 30),
+                                  Center(
+                                    child: SizedBox(
+                                      width: 145,
+                                      height: 45,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            primary: const Color.fromARGB(
+                                                255, 44, 235, 241)),
+                                        onPressed: () {},
+                                        child: const Text(
+                                          'Log-In',
+                                          style: TextStyle(fontSize: 20),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ))
                   ],
                 ),
               ),
