@@ -1,3 +1,4 @@
+import 'dart:html';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:project/base/base_button.dart';
@@ -48,12 +49,16 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
               'price': int.parse(medicine['price'])
             },
           ),
-          headers: {'Content-type': 'application/json'});
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': 'Bearer ${document.cookie!.split('=')[1]}'
+          });
 
       // push router to medicines page
+      // ignore: use_build_context_synchronously
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => MedScreen()),
+        MaterialPageRoute(builder: (context) => const MedScreen()),
       );
     } finally {
       setState(() {
