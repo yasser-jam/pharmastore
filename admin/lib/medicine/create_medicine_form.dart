@@ -32,6 +32,7 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
 
   void editValue(val, bind) {
     medicine[bind] = val;
+    print(medicine['category_id']);
   }
 
   var loading = false;
@@ -55,6 +56,8 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
         'qtn': int.parse(medicine['qtn']),
         'price': int.parse(medicine['price']),
       };
+
+      print(body);
 
       if (mode != 'update') {
         await http.post(url,
@@ -107,7 +110,7 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
       medicine['expiredDate'] = data['expiredDate'];
       medicine['price'] = data['price'].toString();
       medicine['description'] = 'test for test';
-      medicine['category_id'] = data['category_id'];
+      medicine['category_id'] = data['category'][0]['id'];
     }
 
     return Column(children: [
