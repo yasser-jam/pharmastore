@@ -54,7 +54,6 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
         ...medicine,
         'qtn': int.parse(medicine['qtn']),
         'price': int.parse(medicine['price']),
-        'category_id': 1
       };
 
       if (mode != 'update') {
@@ -97,6 +96,8 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
         : null;
 
     data != null ? mode = 'update' : 'create';
+
+    var cat = data != null ? data['category'][0]['id'].toString() : '';
 
     if (data != null) {
       medicine['sciName'] = data['sciName'];
@@ -260,7 +261,10 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
       Row(
         mainAxisSize: MainAxisSize.max,
         children: [
-          Expanded(child: BaseSelect(() {})),
+          Expanded(
+              child: BaseSelect((id) {
+            editValue(id, 'category_id');
+          }, cat)),
         ],
       ),
       const SizedBox(height: 50),

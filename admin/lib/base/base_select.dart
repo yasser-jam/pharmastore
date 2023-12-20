@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class BaseSelect extends StatefulWidget {
-  const BaseSelect(this.refresh, {super.key});
+  const BaseSelect(this.refresh, this.value, {super.key});
+
+  final String value;
 
   final Function refresh;
 
@@ -12,14 +14,18 @@ class BaseSelect extends StatefulWidget {
 }
 
 class _BaseSelectState extends State<BaseSelect> {
-  var _dropdownValue = '';
+  String _dropdownValue = '';
+
+  void initState() {
+    _dropdownValue = widget.value;
+  }
 
   void dropdownCallback(String? selectedValue) {
     if (selectedValue is String) {
       setState(() {
         _dropdownValue = selectedValue;
       });
-      widget.refresh(catId: selectedValue);
+      widget.refresh(selectedValue);
     }
   }
 

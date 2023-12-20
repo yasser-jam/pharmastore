@@ -102,7 +102,7 @@ class _MedScreenState extends State<MedScreen> {
                           ),
                           const SizedBox(width: 20),
                           Expanded(
-                            child: BaseSelect(getMedicines),
+                            child: BaseSelect(getMedicines, ''),
                           ),
                         ],
                       ),
