@@ -64,6 +64,11 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
 
   @override
   build(ctx) {
+    // take the medicine (when update)
+    final data = ModalRoute.of(context)!.settings.arguments != null
+        ? ModalRoute.of(context)!.settings.arguments as Map<dynamic, dynamic>
+        : null;
+
     return Column(children: [
       const SizedBox(height: 20),
       const SizedBox(
@@ -80,7 +85,8 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
         mainAxisSize: MainAxisSize.max,
         children: [
           Expanded(
-              child: TextField(
+              child: TextFormField(
+            initialValue: data != null ? data['sciName'] : '',
             onChanged: (value) {
               editValue(value, 'sciName');
             },
@@ -91,7 +97,8 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
           )),
           SizedBox(width: 10),
           Expanded(
-            child: TextField(
+            child: TextFormField(
+              initialValue: data != null ? data['sciName'] : '',
               onChanged: (value) {
                 editValue(value, 'sciName');
               },
@@ -108,7 +115,8 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
         mainAxisSize: MainAxisSize.max,
         children: [
           Expanded(
-            child: TextField(
+            child: TextFormField(
+              initialValue: data != null ? data['useName'] : '',
               onChanged: (value) {
                 editValue(value, 'useName');
               },
@@ -120,7 +128,8 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
           ),
           SizedBox(width: 10),
           Expanded(
-            child: TextField(
+            child: TextFormField(
+              initialValue: data != null ? data['useName'] : '',
               onChanged: (value) {
                 editValue(value, 'useName');
               },
@@ -137,7 +146,8 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
         mainAxisSize: MainAxisSize.max,
         children: [
           Expanded(
-            child: TextField(
+            child: TextFormField(
+              initialValue: data != null ? data['companyName'] : '',
               onChanged: (value) {
                 editValue(value, 'companyName');
               },
@@ -149,7 +159,8 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
           ),
           SizedBox(width: 10),
           Expanded(
-            child: TextField(
+            child: TextFormField(
+              initialValue: data != null ? data['qtn'].toString() : '',
               onChanged: (value) {
                 editValue(value, 'qtn');
               },
@@ -166,7 +177,8 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
         mainAxisSize: MainAxisSize.max,
         children: [
           Expanded(
-            child: TextField(
+            child: TextFormField(
+              initialValue: data != null ? data['expiredDate'] : '',
               onChanged: (value) {
                 editValue(value, 'expiredDate');
               },
@@ -178,7 +190,8 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
           ),
           SizedBox(width: 10),
           Expanded(
-            child: TextField(
+            child: TextFormField(
+              initialValue: data != null ? data['price'].toString() : '',
               onChanged: (value) {
                 editValue(value, 'price');
               },
@@ -190,7 +203,8 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
           ),
           SizedBox(width: 10),
           Expanded(
-            child: TextField(
+            child: TextFormField(
+              initialValue: data != null ? data['description'] : '',
               onChanged: (value) {
                 editValue(value, 'description');
               },
