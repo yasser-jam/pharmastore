@@ -52,6 +52,14 @@ class OrderController extends Controller
        return new OrderCollection(Order::all());
    }
 
+   // delete an order
+   public function destroy(Order $order){
+    $order->delete();
+    return response()->json([
+        "message"=> "the order has been deleted successfully",
+    ],201);
+}
+
    /**
     * Update the status of an order.
     */
@@ -81,6 +89,9 @@ class OrderController extends Controller
 
        return response()->json(['message' => 'Payment status updated']);
    }
+
+
+
 //    public function __construct()
 //    {
 //        $this->authorizeResource(Order::class, 'orders');
