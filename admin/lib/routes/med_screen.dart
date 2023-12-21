@@ -27,18 +27,18 @@ class _MedScreenState extends State<MedScreen> {
 
   @override
   void initState() {
-    getMedicines(search: '', catId: null);
+    getMedicines(search: '', null);
   }
 
   void search(val) async {
     try {
       loading = true;
 
-      getMedicines(search: val, catId: null);
+      getMedicines(search: val, null);
     } finally {}
   }
 
-  void getMedicines({catId, search}) async {
+  void getMedicines(catId, {search}) async {
     try {
       loading = true;
 
