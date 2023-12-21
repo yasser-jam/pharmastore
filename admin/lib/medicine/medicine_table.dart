@@ -34,9 +34,9 @@ class MedicineTableState extends State<MedicineTable> {
       var resBody = jsonDecode(response.body) as Map<String, dynamic>;
 
       setState(() {
-        widget.refresh();
+        widget.refresh(null);
 
-        //getRows();
+        // getRows();
 
         loading = false;
       });
