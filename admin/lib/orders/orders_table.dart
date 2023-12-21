@@ -59,6 +59,21 @@ class _OrdersTableState extends State<OrdersTable> {
     } finally {}
   }
 
+  void removeOrder(id) async {
+    try {
+      var url = Uri.http('localhost:8000', 'api/orders/$id');
+      var response = await http.delete(url, headers: {
+        'Authorization': 'Bearer ' + document.cookie!.split('=')[1],
+        'Content-type': 'application/json'
+      });
+
+      // update table
+      setState(() async {
+        await widget.callback();
+      });
+    } finally {}
+  }
+
   dynamic getRows() {
     List<DataRow> rows = [];
     widget.data.forEach(
@@ -120,7 +135,9 @@ class _OrdersTableState extends State<OrdersTable> {
                       color: Colors.red[400],
                       iconSize: 20,
                       splashRadius: 20,
-                      onPressed: () {},
+                      onPressed: () {
+                        removeOrder(item['id']);
+                      },
                     ),
                   ],
                 ),
