@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CategoryCollection;
 use App\Models\Medcine;
 use App\Models\Category;
 use App\Models\Favourite;
@@ -21,7 +22,7 @@ class MedcineController extends Controller
      */
     public function index(Request $request)
     {
-        // $this->authorize('viewAny', Medcine::class);
+        $this->authorize('viewAny', Medcine::class);
 
         $filter = new MedcineFilter();
         $queryItems = $filter->transform($request);
@@ -38,7 +39,7 @@ class MedcineController extends Controller
     public function show(Medcine $medcine)
     {
         $medcine->show=true;
-        return new MedcineResource($medcine);
+        return new MedcineResource($medcine);    
     }
 
     /**
@@ -73,7 +74,7 @@ class MedcineController extends Controller
      */
     public function update(UpdateMedcineRequest $request, Medcine $medcine)
     {
-        $validated= $request->validated();
+        $validated= $request->validated(); 
         $medcine->update($validated);
         return new MedcineResource($medcine);
     }
@@ -90,7 +91,6 @@ class MedcineController extends Controller
     }
     public function addToFavorites(Request $request, $medcineId)
     {
-        dd(auth()->user());
         $userId = auth()->user()->id;
 
         // Check if the medicine is already in favorites
@@ -106,9 +106,19 @@ class MedcineController extends Controller
 
         return response()->json(['message' => 'Medcine added to favorites']);
     }
+    //get favorites
+    public function viewFav(){
+        $user_id=Auth::id();
+        $fav=Favourite::where('user_id',$user_id)->get()->all();   
+        return $fav;    
+    }
+    //get categores
+    public function getCat(){
+        return new CategoryCollection(Category::all());
+    }
     //
     public function __construct()
     {
-        // $this->authorizeResource(Medcine::class, 'medcine');
+        $this->authorizeResource(Medcine::class, 'medcine');
     }
 }
