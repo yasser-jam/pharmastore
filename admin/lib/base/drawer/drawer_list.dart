@@ -24,9 +24,15 @@ class DrawerList extends StatelessWidget {
               ),
             ])),
         const Divider(color: Colors.white),
-        const DrawerItem(text: 'Medicines', icon: 0xe60a),
-        const DrawerItem(text: 'Pharmacies', icon: 0xf0147),
-        const DrawerItem(text: 'Categories', icon: 0xe148),
+        const DrawerItem(
+            text: 'Medicines',
+            icon: 0xe60a,
+            link: '/med-list',
+            detailsPage: true),
+        const DrawerItem(
+            text: 'Orders', icon: 0xf0147, link: '/orders', detailsPage: false),
+        const DrawerItem(
+            text: 'Categories', icon: 0xe148, link: '', detailsPage: false),
       ],
     );
   }

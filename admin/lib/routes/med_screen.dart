@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:project/base/base_select.dart';
 import 'package:project/base/base_text_field.dart';
@@ -20,30 +22,44 @@ class MedScreen extends StatefulWidget {
 class _MedScreenState extends State<MedScreen> {
   var medicines = [];
 
-  var loading = true;
+  var searchText = '';
+  var loading = false;
 
   @override
   void initState() {
-    getMedicines();
+    getMedicines(search: '', catId: null);
   }
 
-  dynamic getMedicines() async {
+  void search(val) async {
     try {
-      var url = Uri.http('localhost:8000', 'api/medcines');
+      loading = true;
 
-      var response = await http.get(url);
+      getMedicines(search: val, catId: null);
+    } finally {}
+  }
+
+  void getMedicines({catId, search}) async {
+    try {
+      loading = true;
+
+      Map<String, String> queryParameters = {
+        'useName[like]': search ?? '',
+        'category_id[eq]': catId ?? '',
+      };
+
+      var url = Uri.http('localhost:8000', 'api/medcines', queryParameters);
+
+      var response = await http.get(url, headers: {
+        'Authorization': 'Bearer ' + document.cookie!.split('=')[1]
+      });
 
       var resBody = jsonDecode(response.body) as Map<String, dynamic>;
 
-      medicines = resBody['data'];
-
       setState(() {
+        medicines = [...resBody['data']];
+
         loading = false;
       });
-
-      print(medicines);
-
-      return medicines;
     } finally {}
   }
 
@@ -82,18 +98,18 @@ class _MedScreenState extends State<MedScreen> {
                       Row(
                         children: [
                           Expanded(
-                            child: BaseTextField('Search...', () {}),
+                            child: BaseTextField('Search...', search),
                           ),
                           const SizedBox(width: 20),
-                          const Expanded(
-                            child: BaseSelect(),
+                          Expanded(
+                            child: BaseSelect(getMedicines, ''),
                           ),
                         ],
                       ),
                       Expanded(
                         child: loading
-                            ? Text('loading...')
-                            : MedicineTable(medicines),
+                            ? Text('loading table...')
+                            : MedicineTable(data: medicines, getMedicines),
                       )
                     ],
                   )),

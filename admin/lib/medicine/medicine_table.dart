@@ -1,13 +1,51 @@
+import 'dart:html';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
-class MedicineTable extends StatelessWidget {
-  const MedicineTable(this.data, {super.key});
+class MedicineTable extends StatefulWidget {
+  MedicineTable(this.refresh, {super.key, required this.data});
 
-  final List data;
+  final data;
+  final Function refresh;
 
-  dynamic getRows() {
+  @override
+  State createState() {
+    return MedicineTableState();
+  }
+}
+
+class MedicineTableState extends State<MedicineTable> {
+  var loading = false;
+
+  dynamic delete(id) async {
+    try {
+      var url = Uri.http('localhost:8000', 'api/medcines/' + id);
+
+      // start loader
+      setState(() {
+        loading = true;
+      });
+
+      var response = await http.delete(url, headers: {
+        'Authorization': 'Bearer ' + document.cookie!.split('=')[1]
+      });
+
+      var resBody = jsonDecode(response.body) as Map<String, dynamic>;
+
+      setState(() {
+        widget.refresh();
+
+        //getRows();
+
+        loading = false;
+      });
+    } finally {}
+  }
+
+  dynamic getRows(ctx) {
     List<DataRow> rows = [];
-    data.forEach((item) {
+    widget.data.forEach((item) {
       rows.add(
         DataRow(
           cells: [
@@ -51,42 +89,50 @@ class MedicineTable extends StatelessWidget {
                 icon: const Icon(Icons.edit),
                 color: Colors.blue[400],
                 iconSize: 20,
-                onPressed: () {},
+                splashRadius: 20,
+                onPressed: () {
+                  Navigator.pushNamed(ctx, '/med-list/details',
+                      arguments: item);
+                },
               ),
               IconButton.filledTonal(
                 icon: const Icon(Icons.delete),
                 color: Colors.red[400],
                 iconSize: 20,
-                onPressed: () {},
+                splashRadius: 20,
+                onPressed: () {
+                  delete(item['id'].toString());
+                },
               ),
             ])),
           ],
         ),
       );
     });
-    print(rows);
 
     return rows;
   }
 
   @override
   build(ctx) {
-    getRows();
-    return SizedBox(
-      width: double.infinity,
-      child: ListView(children: [
-        DataTable(
-          columns: const [
-            DataColumn(label: Text('Name')),
-            // DataColumn(label: Text('Categories')),
-            DataColumn(label: Text('Quantity')),
-            DataColumn(label: Text('Price')),
-            DataColumn(label: Text('Expiration Date')),
-            DataColumn(label: Text('')),
-          ],
-          rows: getRows(),
-        ),
-      ]),
-    );
+    getRows(ctx);
+    return loading
+        ? Text('loading...')
+        : SizedBox(
+            width: double.infinity,
+            child: ListView(children: [
+              DataTable(
+                columns: const [
+                  DataColumn(label: Text('Name')),
+                  // DataColumn(label: Text('Categories')),
+                  DataColumn(label: Text('Quantity')),
+                  DataColumn(label: Text('Price')),
+                  DataColumn(label: Text('Expiration Date')),
+                  DataColumn(label: Text('')),
+                ],
+                rows: getRows(ctx),
+              ),
+            ]),
+          );
   }
 }
