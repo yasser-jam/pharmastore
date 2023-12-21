@@ -36,14 +36,14 @@ class MedicineTableState extends State<MedicineTable> {
       setState(() {
         widget.refresh();
 
-        getRows();
+        //getRows();
 
         loading = false;
       });
     } finally {}
   }
 
-  dynamic getRows() {
+  dynamic getRows(ctx) {
     List<DataRow> rows = [];
     widget.data.forEach((item) {
       rows.add(
@@ -90,7 +90,10 @@ class MedicineTableState extends State<MedicineTable> {
                 color: Colors.blue[400],
                 iconSize: 20,
                 splashRadius: 20,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(ctx, '/med-list/details',
+                      arguments: item);
+                },
               ),
               IconButton.filledTonal(
                 icon: const Icon(Icons.delete),
@@ -112,7 +115,7 @@ class MedicineTableState extends State<MedicineTable> {
 
   @override
   build(ctx) {
-    getRows();
+    getRows(ctx);
     return loading
         ? Text('loading...')
         : SizedBox(
@@ -127,7 +130,7 @@ class MedicineTableState extends State<MedicineTable> {
                   DataColumn(label: Text('Expiration Date')),
                   DataColumn(label: Text('')),
                 ],
-                rows: getRows(),
+                rows: getRows(ctx),
               ),
             ]),
           );

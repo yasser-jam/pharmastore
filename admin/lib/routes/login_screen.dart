@@ -19,8 +19,10 @@ class LoginScreen extends StatelessWidget {
   void login(dynamic ctx) async {
     try {
       var url = Uri.http('localhost:8000', 'api/webLogin');
-      var response = await http
-          .post(url, body: {'phoneNumber': phoneNumber, 'password': password});
+      var response = await http.post(
+        url,
+        body: {'phoneNumber': phoneNumber, 'password': password},
+      );
 
       var resBody = jsonDecode(response.body) as Map<String, dynamic>;
 
