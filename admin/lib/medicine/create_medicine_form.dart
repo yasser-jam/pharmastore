@@ -1,3 +1,4 @@
+import 'dart:html';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:project/base/base_button.dart';
@@ -16,6 +17,8 @@ class CreateMedicineForm extends StatefulWidget {
 }
 
 class _CreateMedicineFormState extends State<CreateMedicineForm> {
+  var mode;
+
   Map<String, dynamic> medicine = {
     'sciName': '',
     'useName': '',
@@ -29,31 +32,58 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
 
   void editValue(val, bind) {
     medicine[bind] = val;
+    print(medicine['category_id']);
   }
 
   var loading = false;
 
-  dynamic save() async {
+  dynamic save(id) async {
     try {
       setState(() {
         loading = true;
       });
 
-      var url = Uri.http('localhost:8000', 'api/medcines');
-      await http.post(url,
-          body: jsonEncode(
-            {
-              ...medicine,
-              'qtn': int.parse(medicine['qtn']),
-              'price': int.parse(medicine['price'])
-            },
-          ),
-          headers: {'Content-type': 'application/json'});
+      var url;
+
+      if (mode == 'update') {
+        url = Uri.http('localhost:8000', 'api/medcines/$id');
+      } else {
+        url = Uri.http('localhost:8000', 'api/medcines');
+      }
+
+      var body = {
+        ...medicine,
+        'qtn': int.parse(medicine['qtn']),
+        'price': int.parse(medicine['price']),
+      };
+
+      print(body);
+
+      if (mode != 'update') {
+        await http.post(url,
+            body: jsonEncode(
+              body,
+            ),
+            headers: {
+              'Content-type': 'application/json',
+              'Authorization': 'Bearer ' + document.cookie!.split('=')[1]
+            });
+      } else {
+        await http.patch(url,
+            body: jsonEncode(
+              body,
+            ),
+            headers: {
+              'Content-type': 'application/json',
+              'Authorization': 'Bearer ' + document.cookie!.split('=')[1]
+            });
+      }
 
       // push router to medicines page
+      // ignore: use_build_context_synchronously
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => MedScreen()),
+        MaterialPageRoute(builder: (context) => const MedScreen()),
       );
     } finally {
       setState(() {
@@ -64,6 +94,26 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
 
   @override
   build(ctx) {
+    // take the medicine (when update)
+    final data = ModalRoute.of(context)!.settings.arguments != null
+        ? ModalRoute.of(context)!.settings.arguments as Map<dynamic, dynamic>
+        : null;
+
+    data != null ? mode = 'update' : 'create';
+
+    var cat = data != null ? data['category'][0]['id'].toString() : '';
+
+    if (data != null) {
+      medicine['sciName'] = data['sciName'];
+      medicine['useName'] = data['useName'];
+      medicine['companyName'] = data['companyName'];
+      medicine['qtn'] = data['qtn'].toString();
+      medicine['expiredDate'] = data['expiredDate'];
+      medicine['price'] = data['price'].toString();
+      medicine['description'] = 'test for test';
+      medicine['category_id'] = data['category'][0]['id'];
+    }
+
     return Column(children: [
       const SizedBox(height: 20),
       const SizedBox(
@@ -80,7 +130,8 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
         mainAxisSize: MainAxisSize.max,
         children: [
           Expanded(
-              child: TextField(
+              child: TextFormField(
+            initialValue: data != null ? data['sciName'] : '',
             onChanged: (value) {
               editValue(value, 'sciName');
             },
@@ -91,7 +142,8 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
           )),
           SizedBox(width: 10),
           Expanded(
-            child: TextField(
+            child: TextFormField(
+              initialValue: data != null ? data['sciName'] : '',
               onChanged: (value) {
                 editValue(value, 'sciName');
               },
@@ -103,12 +155,13 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
           )
         ],
       ),
-      SizedBox(height: 30),
+      Divider(height: 30),
       Row(
         mainAxisSize: MainAxisSize.max,
         children: [
           Expanded(
-            child: TextField(
+            child: TextFormField(
+              initialValue: data != null ? data['useName'] : '',
               onChanged: (value) {
                 editValue(value, 'useName');
               },
@@ -120,7 +173,8 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
           ),
           SizedBox(width: 10),
           Expanded(
-            child: TextField(
+            child: TextFormField(
+              initialValue: data != null ? data['useName'] : '',
               onChanged: (value) {
                 editValue(value, 'useName');
               },
@@ -137,7 +191,8 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
         mainAxisSize: MainAxisSize.max,
         children: [
           Expanded(
-            child: TextField(
+            child: TextFormField(
+              initialValue: data != null ? data['companyName'] : '',
               onChanged: (value) {
                 editValue(value, 'companyName');
               },
@@ -149,7 +204,8 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
           ),
           SizedBox(width: 10),
           Expanded(
-            child: TextField(
+            child: TextFormField(
+              initialValue: data != null ? data['qtn'].toString() : '',
               onChanged: (value) {
                 editValue(value, 'qtn');
               },
@@ -166,7 +222,8 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
         mainAxisSize: MainAxisSize.max,
         children: [
           Expanded(
-            child: TextField(
+            child: TextFormField(
+              initialValue: data != null ? data['expiredDate'] : '',
               onChanged: (value) {
                 editValue(value, 'expiredDate');
               },
@@ -178,7 +235,8 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
           ),
           SizedBox(width: 10),
           Expanded(
-            child: TextField(
+            child: TextFormField(
+              initialValue: data != null ? data['price'].toString() : '',
               onChanged: (value) {
                 editValue(value, 'price');
               },
@@ -190,7 +248,8 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
           ),
           SizedBox(width: 10),
           Expanded(
-            child: TextField(
+            child: TextFormField(
+              initialValue: data != null ? data['description'] : '',
               onChanged: (value) {
                 editValue(value, 'description');
               },
@@ -203,10 +262,13 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
         ],
       ),
       const SizedBox(height: 30),
-      const Row(
+      Row(
         mainAxisSize: MainAxisSize.max,
         children: [
-          Expanded(child: BaseSelect()),
+          Expanded(
+              child: BaseSelect((id) {
+            editValue(id, 'category_id');
+          }, cat)),
         ],
       ),
       const SizedBox(height: 50),
@@ -226,7 +288,7 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
             onPressed: loading
                 ? null
                 : () {
-                    save();
+                    save(data != null ? data['id'] : null);
                   },
             child: loading
                 ? const SizedBox(

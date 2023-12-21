@@ -7,7 +7,7 @@ import 'package:project/base/drawer/drawer_list.dart';
 class AddMedScreen extends StatelessWidget {
   const AddMedScreen({super.key});
 
-  static const String route = '/add-medicine';
+  static const String route = '/med-list/details';
 
   @override
   build(ctx) {

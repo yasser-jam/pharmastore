@@ -1,21 +1,51 @@
+import 'dart:html';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:project/base/base_select.dart';
 import 'package:project/base/base_text_field.dart';
 import 'package:project/base/drawer/drawer_list.dart';
-import 'package:project/base/base_table.dart';
 import 'package:project/orders/orders_table.dart';
 
-class OrdersScreen extends StatelessWidget {
+class OrdersScreen extends StatefulWidget {
   OrdersScreen({super.key});
 
   static const String route = '/orders';
 
+  @override
+  State createState() {
+    return OrdersScreenState();
+  }
+}
+
+class OrdersScreenState extends State<OrdersScreen> {
   var loading = false;
 
-  var orders = [
-    {'status': 'PENDING', 'billingstatus': 'CASH'},
-    {'status': 'PENDING', 'billingstatus': 'CREDIT CARD'}
-  ];
+  var orders = [];
+
+  @override
+  void initState() {
+    getOrders();
+  }
+
+  void getOrders() async {
+    try {
+      loading = true;
+
+      var url = Uri.http('localhost:8000', 'api/viewOrders');
+
+      var response = await http.get(url, headers: {
+        'Authorization': 'Bearer ' + document.cookie!.split('=')[1]
+      });
+
+      var resBody = jsonDecode(response.body) as Map<String, dynamic>;
+
+      setState(() {
+        orders = [...resBody['data']];
+        loading = false;
+      });
+    } finally {}
+  }
 
   @override
   build(ctx) {
@@ -54,7 +84,7 @@ class OrdersScreen extends StatelessWidget {
                     Expanded(
                       child: loading
                           ? Text('loading...')
-                          : OrdersTable(data: orders),
+                          : OrdersTable(data: orders, callback: getOrders),
                     )
                   ],
                 ),
