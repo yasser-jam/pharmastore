@@ -32,7 +32,6 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
 
   void editValue(val, bind) {
     medicine[bind] = val;
-    print(medicine['category_id']);
   }
 
   var loading = false;
