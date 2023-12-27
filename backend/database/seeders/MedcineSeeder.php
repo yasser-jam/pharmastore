@@ -15,14 +15,12 @@ class MedcineSeeder extends Seeder
     {
         $jsonString = file_get_contents('public\temp.json');
         $data = json_decode($jsonString, true);
-        
         foreach ($data as $items) {
             foreach($items as $item){
                 $item['category_id']=$item['category']['id'];
                 unset($item['category']);
                 Medcine::create($item);
             }
-            
         }
     }
 }

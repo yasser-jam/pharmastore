@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\CategoryCollection;
 use App\Models\Medcine;
 use App\Models\Category;
 use App\Models\Favourite;

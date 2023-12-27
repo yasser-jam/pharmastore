@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Events\sent;
+use App\Models\Order;
 use App\Http\Requests\billingStatusRequest;
 use App\Http\Requests\statusRequest;
-use App\Models\Order;
 use App\Events\NewOrder;
 use App\Models\OrderItem;
 use Illuminate\Support\Facades\Gate;

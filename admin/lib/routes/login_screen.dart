@@ -19,18 +19,17 @@ class LoginScreen extends StatelessWidget {
   void login(dynamic ctx) async {
     try {
       var url = Uri.http('localhost:8000', 'api/webLogin');
-      var response = await http
-          .post(url, body: {'phoneNumber': phoneNumber, 'password': password});
+      var response = await http.post(
+        url,
+        body: {'phoneNumber': phoneNumber, 'password': password},
+      );
 
       var resBody = jsonDecode(response.body) as Map<String, dynamic>;
 
       // setting access token in cookie
       document.cookie = "access_token=" + resBody['access_token'];
 
-      Navigator.push(
-        ctx,
-        MaterialPageRoute(builder: (context) => MedScreen()),
-      );
+      Navigator.pushNamed(ctx, '/med-list');
     } finally {}
   }
 
