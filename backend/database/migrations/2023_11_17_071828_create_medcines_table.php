@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date("expiredDate");
             $table->integer("price");
             $table->boolean("show")->default(false);
-            $table->text("description");
+            $table->text("description")->nullable();
             $table->timestamps();
         });
     }

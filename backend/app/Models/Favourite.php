@@ -9,14 +9,14 @@ class Favourite extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'medicine_id'];
+    protected $fillable = ['user_id', 'medcine_id'];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function medcine()
+    public function medcines()
     {
         return $this->belongsTo(Medcine::class);
     }

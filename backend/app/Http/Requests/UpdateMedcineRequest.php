@@ -36,7 +36,7 @@ class UpdateMedcineRequest extends FormRequest
             "qtn"=>['sometimes', 'required'],
             "expiredDate"=>['sometimes', 'required'],
             "price"=> ['sometimes', 'required'],
-            "description"=> ['sometimes', 'required'],
+            "description"=> ['sometimes'],
             "category_id"=>['sometimes','exists:categories,id']
         ];
     }

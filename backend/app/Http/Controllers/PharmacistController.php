@@ -32,6 +32,7 @@ class PharmacistController extends Controller
             ],401);
         }
         return response()->json([
+            "name"=>$pharmacist->name,
             "access_token"=> $pharmacist->createToken("api_token")->plainTextToken,
             "token_type"=>"bearer"
         ]);
