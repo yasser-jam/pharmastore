@@ -12,6 +12,7 @@ use App\Http\Resources\MedcineResource;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\MedcineCollection;
 use App\Http\Requests\StoreMedcineRequest;
+use App\Http\Resources\CategoryCollection;
 use App\Http\Requests\UpdateMedcineRequest;
 
 class MedcineController extends Controller
