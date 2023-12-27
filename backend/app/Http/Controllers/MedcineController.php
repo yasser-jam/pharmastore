@@ -110,14 +110,14 @@ class MedcineController extends Controller
     public function viewFav(){
         $user_id=Auth::id();
         $fav=Favourite::where('user_id',$user_id)->get()->all(); 
-        dd($fav->medcines());
         return $fav;    
     }
 
     //remove from favorites
-    public function removeFav(Medcine $medcine){
-         $med=Favourite::where('medcine_id',$medcine)->get();
-         dd($med);
+    public function removeFav($medcineId){
+         $med=Favourite::where('medcine_id',$medcineId)->First();
+         $med->delete();
+         return response()->json(['message' => 'Medcine removed from favorites'],202);
     }
 
     //get categores
