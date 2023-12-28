@@ -56,8 +56,6 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
         'price': int.parse(medicine['price']),
       };
 
-      print(body);
-
       if (mode != 'update') {
         await http.post(url,
             body: jsonEncode(

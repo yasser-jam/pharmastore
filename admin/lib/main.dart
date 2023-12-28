@@ -35,10 +35,17 @@ class PharmaStore extends StatelessWidget {
       routes: {
         LoginScreen.route: (ctx) => LoginScreen(),
         AddMedScreen.route: (ctx) => const AddMedScreen(),
-        MedScreen.route: (ctx) => MedScreen(),
+        MedScreen.route: (ctx) => const MedScreen(),
         OrdersScreen.route: (ctx) => OrdersScreen(),
         OrderDetailsScreen.route: (ctx) => OrderDetailsScreen(null)
       },
+      theme: ThemeData(
+        primaryColor: const Color.fromARGB(255, 26, 144, 148),
+        colorScheme: const ColorScheme.light(
+          secondary: Color.fromARGB(255, 226, 170, 85),
+          surface: Color.fromARGB(255, 145, 125, 235),
+        ),
+      ),
     );
   }
 }

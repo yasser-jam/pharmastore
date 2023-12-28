@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 
+import 'order_dialog.dart';
+
 class OrdersTable extends StatefulWidget {
   const OrdersTable({super.key, required this.data, required this.callback});
 
@@ -74,7 +76,7 @@ class _OrdersTableState extends State<OrdersTable> {
     } finally {}
   }
 
-  dynamic getRows() {
+  dynamic getRows(ctx) {
     List<DataRow> rows = [];
     widget.data.forEach(
       (item) {
@@ -97,10 +99,10 @@ class _OrdersTableState extends State<OrdersTable> {
                 },
                 Chip(
                   backgroundColor: item['status'] == 'sent'
-                      ? Color.fromARGB(255, 219, 216, 110)
+                      ? Theme.of(ctx).colorScheme.secondary
                       : item['status'] == 'received'
-                          ? Color.fromARGB(255, 26, 144, 148)
-                          : Color.fromARGB(255, 145, 125, 235),
+                          ? Theme.of(ctx).primaryColor
+                          : Theme.of(ctx).colorScheme.surface,
                   label: Text(
                     item['status'],
                     style: const TextStyle(color: Colors.white),
@@ -113,23 +115,30 @@ class _OrdersTableState extends State<OrdersTable> {
                 },
                 Chip(
                   backgroundColor: item['billingstatus'] == 'paid'
-                      ? Color.fromARGB(255, 26, 144, 148)
-                      : Color.fromARGB(255, 226, 170, 85),
+                      ? Theme.of(ctx).primaryColor
+                      : Theme.of(ctx).colorScheme.secondary,
                   label: Text(
                     item['billingstatus'],
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
               ),
               DataCell(
                 Row(
                   children: [
-                    // IconButton.filledTonal(
-                    //     icon: const Icon(Icons.check),
-                    //     color: Colors.blue,
-                    //     iconSize: 20,
-                    //     splashRadius: 20,
-                    //     onPressed: () {}),
+                    IconButton.filledTonal(
+                        icon: const Icon(Icons.edit),
+                        color: Colors.blue,
+                        iconSize: 20,
+                        splashRadius: 20,
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return OrderDialog();
+                            },
+                          );
+                        }),
                     IconButton.filledTonal(
                       icon: const Icon(Icons.delete),
                       color: Colors.red[400],
@@ -153,7 +162,7 @@ class _OrdersTableState extends State<OrdersTable> {
 
   @override
   build(ctx) {
-    getRows();
+    getRows(ctx);
     return SizedBox(
       width: double.infinity,
       child: DataTable(columns: const [
@@ -161,7 +170,7 @@ class _OrdersTableState extends State<OrdersTable> {
         DataColumn(label: Text('status')),
         DataColumn(label: Text('billingstatus')),
         DataColumn(label: Text('')),
-      ], rows: getRows()),
+      ], rows: getRows(ctx)),
     );
   }
 }
