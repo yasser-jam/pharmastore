@@ -55,7 +55,9 @@ class MedcineController extends Controller
      */
     public function store(StoreMedcineRequest $request)
     {
-       // dd(Auth::user());
+        if($request->hasFile('image')) {
+            $validatedData['image'] = $request->file('image')->store('images', 'public');
+        }
         $validatedData = $request->validated();
         $medcine = Medcine::create($validatedData);
         return new MedcineResource($medcine);
