@@ -17,7 +17,10 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id'=>fake()->numberBetween(2,6),
+            'status'=>'received',
+            'billingstatus'=>'paid',
+            'created_at'=>fake()->dateTime()
         ];
     }
 }

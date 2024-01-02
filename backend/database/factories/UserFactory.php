@@ -20,12 +20,15 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $s=fake()->numberBetween(100,999);
+        $ph="0931465".$s;
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'phoneNumber'=>$ph,
+            'address'=>fake()->address(),
+            'isStoreOwner'=>false
         ];
     }
 
