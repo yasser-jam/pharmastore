@@ -20,16 +20,10 @@ class OrderDialog extends StatefulWidget {
 }
 
 class OrderDialogState extends State<OrderDialog> {
-  List<Map> items = [
-    {'name': 'order - 1', 'price': '100', 'qtn': '10'},
-    {'name': 'order - 2', 'price': '160', 'qtn': '100'},
-    {'name': 'order - 3', 'price': '200', 'qtn': '20'},
-  ];
-
-  List<Widget> getRows(List<Map> items, BuildContext ctx) {
+  List<Widget> getRows(BuildContext ctx) {
     List<Widget> widgets = [];
 
-    items.forEach((element) {
+    widget.order['items'].forEach((element) {
       widgets.add(ListTile(
         contentPadding: const EdgeInsets.all(0),
         title: Container(
@@ -38,7 +32,7 @@ class OrderDialogState extends State<OrderDialog> {
           child: Row(children: [
             Expanded(
               child: Text(
-                element['name'].toString(),
+                element['medicine_id'].toString(),
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -49,7 +43,7 @@ class OrderDialogState extends State<OrderDialog> {
               child: Chip(
                 backgroundColor: Theme.of(ctx).primaryColor,
                 label: Text(
-                  element['qtn'].toString() + '\$',
+                  element['qtn_requested'].toString() + '\$',
                   style: const TextStyle(color: Colors.white),
                 ),
               ),
@@ -58,7 +52,7 @@ class OrderDialogState extends State<OrderDialog> {
               child: Chip(
                 backgroundColor: Theme.of(ctx).colorScheme.secondary,
                 label: Text(
-                  element['price'].toString(),
+                  element['qtn_received'].toString(),
                   style: const TextStyle(color: Colors.white),
                 ),
               ),
@@ -132,7 +126,7 @@ class OrderDialogState extends State<OrderDialog> {
             SizedBox(
                 height: 200,
                 child: ListView(
-                  children: getRows(items, ctx),
+                  children: getRows(ctx),
                 )),
             const SizedBox(height: 50),
             Row(
