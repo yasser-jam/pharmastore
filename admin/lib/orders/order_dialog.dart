@@ -1,9 +1,17 @@
+import 'dart:convert';
+import 'dart:html';
+
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:project/base/base_select.dart';
 import 'package:project/base/base_button.dart';
 
 class OrderDialog extends StatefulWidget {
-  OrderDialog({super.key});
+  OrderDialog({super.key, required this.order, required this.callback});
+
+  final Function callback;
+
+  final Map order;
 
   @override
   State createState() {
@@ -63,8 +71,50 @@ class OrderDialogState extends State<OrderDialog> {
     return widgets;
   }
 
+  void editValue(val, bind) {
+    widget.order[bind] = val;
+    print(widget.order);
+  }
+
+  void updatePayment() async {
+    try {
+      var url =
+          Uri.http('localhost:8000', 'api/billingStatus/${widget.order['id']}');
+      var response = await http.patch(url,
+          body: jsonEncode({"status": widget.order['billingstatus']}),
+          headers: {
+            'Authorization': 'Bearer ' + document.cookie!.split('=')[1],
+            'Content-type': 'application/json'
+          });
+    } finally {}
+  }
+
+  void updateStatus() async {
+    try {
+      var url =
+          Uri.http('localhost:8000', 'api/orderStatus/${widget.order['id']}');
+      var response = await http.patch(url,
+          body: jsonEncode({'status': widget.order['status']}),
+          headers: {
+            'Authorization': 'Bearer ' + document.cookie!.split('=')[1],
+            'Content-type': 'application/json'
+          });
+    } finally {}
+  }
+
   @override
   Widget build(BuildContext ctx) {
+    const statusOptions = [
+      {'value': 'preparing', 'title': 'Preparing'},
+      {'value': 'sent', 'title': 'Sent'},
+      {'value': 'received', 'title': 'Received'}
+    ];
+
+    const billingOptions = [
+      {'value': 'unpaid', 'title': 'Unpaid'},
+      {'value': 'paid', 'title': 'Paid'},
+    ];
+
     return Dialog(
       child: Container(
         width: 900,
@@ -88,34 +138,15 @@ class OrderDialogState extends State<OrderDialog> {
             Row(
               children: [
                 Expanded(
-                  child: DropdownButton<String>(
-                    hint: const Text('Order Status'),
-                    items:
-                        ['received', 'preparing', 'sent'].map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? value) {
-                      // Handle selection
-                    },
-                  ),
+                  child: BaseSelect((status) {
+                    editValue(status, 'billingstatus');
+                  }, widget.order['billingstatus'], billingOptions),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
-                  child: DropdownButton<String>(
-                    hint: const Text('Billing Status'),
-                    items: ['paid', 'unpaid'].map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? value) {
-                      // Handle selection
-                    },
-                  ),
+                  child: BaseSelect((status) {
+                    editValue(status, 'status');
+                  }, widget.order['status'], statusOptions),
                 ),
               ],
             ),
@@ -125,7 +156,13 @@ class OrderDialogState extends State<OrderDialog> {
               BaseButton(
                   type: 'default',
                   btnText: 'Save',
-                  onClick: () {
+                  onClick: () async {
+                    // update billingstatus and status
+                    updatePayment();
+                    updateStatus();
+
+                    await widget.callback();
+
                     Navigator.of(context).pop(); // Close the dialog
                   })
             ])

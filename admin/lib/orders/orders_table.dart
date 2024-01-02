@@ -135,7 +135,11 @@ class _OrdersTableState extends State<OrdersTable> {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return OrderDialog();
+                              return OrderDialog(
+                                  order: item,
+                                  callback: () {
+                                    widget.callback();
+                                  });
                             },
                           );
                         }),
