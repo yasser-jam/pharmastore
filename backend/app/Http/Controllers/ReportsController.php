@@ -44,4 +44,24 @@ class ReportsController extends Controller
             "Total_of_medcines_Sold"=>$noMed
         ]);
     }
+    function pharmacySales(){
+        $pharmacists=User::where("isStoreOwner",false)->get();
+        $monthSales=array_fill(0, 12, 0);
+        $noMed=array_fill(0, 12, 0);
+        foreach($pharmacists as $pharmacist){
+            $orders=$pharmacist->orders()->get();
+            foreach($orders as $order){
+                $items=$order->items()->get();
+                foreach($items as $item){
+                    $noMed[$order->created_at->month-1]+=$item->qtn_requested;
+                    $medcine=$item->medcine()->get();
+                    $monthSales[$order->created_at->month-1]+=$item->qtn_requested *$medcine[0]["price"];                    
+                } 
+            }
+        }
+        return response()->json([
+            "Monthly_Sales_warehouse"=>$monthSales,
+            "Monthly_No_Med_Sold"=>$noMed
+        ]);
+    }
 }

@@ -20,11 +20,16 @@ use App\Http\Controllers\PharmacistController;
 |
 */
 
-Route::get('reports',[ReportsController::class,'getReport']);
+Route::middleware('auth:sanctum')->group(function(){
+    Route::apiResource('reportts', ReportsController::class);
+    Route::get('reports',[ReportsController::class,'getReport']);
+    Route::get('monthlyReport',[ReportsController::class,'pharmacySales']);
+});
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
 Route::post('register',[PharmacistController::class,'register']);
 Route::post('login',[PharmacistController::class,'login']);
 Route::post('webLogin',[PharmacistController::class,'webLogin']);
@@ -35,6 +40,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/favourites',[MedcineController::class,'viewFav']);
     Route::delete('/favourites/{medcineId}',[MedcineController::class,'removeFav']);
 });
+
 Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('orders', OrderController::class);
     //Route::delete('orders/{order}',[OrderController::class,'destroy']);
