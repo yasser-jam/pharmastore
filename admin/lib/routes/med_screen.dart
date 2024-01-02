@@ -65,6 +65,13 @@ class _MedScreenState extends State<MedScreen> {
 
   @override
   build(ctx) {
+    const options = [
+      {'title': 'Pain Reliever', 'value': '1'},
+      {'title': 'Stimulant', 'value': '2'},
+      {'title': 'Antibiotic', 'value': '3'},
+      {'title': 'All', 'value': ''},
+    ];
+
     return Scaffold(
       body: Row(
         children: [
@@ -102,7 +109,7 @@ class _MedScreenState extends State<MedScreen> {
                           ),
                           const SizedBox(width: 20),
                           Expanded(
-                            child: BaseSelect(getMedicines, ''),
+                            child: BaseSelect(getMedicines, '', options),
                           ),
                         ],
                       ),

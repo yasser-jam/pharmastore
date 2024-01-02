@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class BaseSelect extends StatefulWidget {
-  const BaseSelect(this.refresh, this.value, {super.key});
+  const BaseSelect(this.refresh, this.value, this.options, {super.key});
 
   final String value;
 
   final Function refresh;
+
+  final List<Map> options;
 
   @override
   State<BaseSelect> createState() {
@@ -29,6 +31,15 @@ class _BaseSelectState extends State<BaseSelect> {
     }
   }
 
+  dynamic getOptions() {
+    List<DropdownMenuItem<String>> ls = [];
+    widget.options.forEach((element) {
+      ls.add(DropdownMenuItem(
+          value: element['value'], child: Text(element['title'])));
+    });
+    return ls;
+  }
+
   @override
   build(ctx) {
     return DecoratedBox(
@@ -38,13 +49,7 @@ class _BaseSelectState extends State<BaseSelect> {
         ),
         child: DropdownButton(
           padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-          items: const [
-            DropdownMenuItem(value: '1', child: Text('Pain Reliever')),
-            DropdownMenuItem(value: '2', child: Text('Stimulant')),
-            DropdownMenuItem(value: '3', child: Text('Stimulant')),
-            DropdownMenuItem(value: '4', child: Text('Antibiotic')),
-            DropdownMenuItem(value: '', child: Text('All')),
-          ],
+          items: getOptions(),
           onChanged: dropdownCallback,
           value: _dropdownValue,
           underline: Container(),
