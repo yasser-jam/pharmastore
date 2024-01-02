@@ -29,7 +29,7 @@ class LoginScreen extends StatelessWidget {
       // setting access token in cookie
       document.cookie = "access_token=" + resBody['access_token'];
 
-      Navigator.pushNamed(ctx, '/med-list');
+      Navigator.pushNamed(ctx, '/');
     } finally {}
   }
 

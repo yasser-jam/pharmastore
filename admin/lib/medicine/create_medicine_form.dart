@@ -56,8 +56,6 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
         'price': int.parse(medicine['price']),
       };
 
-      print(body);
-
       if (mode != 'update') {
         await http.post(url,
             body: jsonEncode(
@@ -79,9 +77,10 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
       }
 
       // push router to medicines page
+      // ignore: use_build_context_synchronously
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => MedScreen()),
+        MaterialPageRoute(builder: (context) => const MedScreen()),
       );
     } finally {
       setState(() {
@@ -99,7 +98,7 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
 
     data != null ? mode = 'update' : 'create';
 
-    var cat = data != null ? data['category'][0]['id'].toString() : '';
+    var cat = data != null ? data['category'][0]['id'].toString() : '1';
 
     if (data != null) {
       medicine['sciName'] = data['sciName'];
@@ -111,6 +110,13 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
       medicine['description'] = 'test for test';
       medicine['category_id'] = data['category'][0]['id'];
     }
+
+    const options = [
+      {'title': 'Pain Reliever', 'value': '1'},
+      {'title': 'Stimulant', 'value': '2'},
+      {'title': 'Sedative', 'value': '3'},
+      {'title': 'Antibiotic', 'value': '4'},
+    ];
 
     return Column(children: [
       const SizedBox(height: 20),
@@ -266,13 +272,18 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
           Expanded(
               child: BaseSelect((id) {
             editValue(id, 'category_id');
-          }, cat)),
+          }, cat, options)),
         ],
       ),
       const SizedBox(height: 50),
       Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         BaseButton(
-          onClick: () {},
+          onClick: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MedScreen()),
+            );
+          },
           type: 'cancel',
           btnText: 'Cancel',
         ),

@@ -1,11 +1,13 @@
 import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:project/routes/home_screen.dart';
 import 'package:project/routes/login_screen.dart';
 import 'package:project/routes/add_med_screen.dart';
 import 'package:project/routes/med_screen.dart';
 import 'package:project/routes/orders_screen.dart';
 import 'package:project/routes/order_details_screen.dart';
+import 'package:project/routes/home_screen.dart';
 
 /// Flutter code sample for [AppBar].
 
@@ -28,17 +30,25 @@ class PharmaStore extends StatelessWidget {
       hasAccessToken = true;
     }
 
-    var initialRoute = hasAccessToken ? MedScreen.route : LoginScreen.route;
+    var initialRoute = hasAccessToken ? HomeScreen.route : LoginScreen.route;
 
     return MaterialApp(
       initialRoute: initialRoute,
       routes: {
+        HomeScreen.route: (ctx) => HomeScreen(),
         LoginScreen.route: (ctx) => LoginScreen(),
         AddMedScreen.route: (ctx) => const AddMedScreen(),
-        MedScreen.route: (ctx) => MedScreen(),
+        MedScreen.route: (ctx) => const MedScreen(),
         OrdersScreen.route: (ctx) => OrdersScreen(),
         OrderDetailsScreen.route: (ctx) => OrderDetailsScreen(null)
       },
+      theme: ThemeData(
+        primaryColor: const Color.fromARGB(255, 26, 144, 148),
+        colorScheme: const ColorScheme.light(
+          secondary: Color.fromARGB(255, 226, 170, 85),
+          surface: Color.fromARGB(255, 145, 125, 235),
+        ),
+      ),
     );
   }
 }
