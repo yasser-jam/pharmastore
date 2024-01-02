@@ -41,18 +41,18 @@ class OrderDialogState extends State<OrderDialog> {
             ),
             Expanded(
               child: Chip(
-                backgroundColor: Theme.of(ctx).primaryColor,
+                backgroundColor: Theme.of(ctx).colorScheme.secondary,
                 label: Text(
-                  element['qtn_requested'].toString() + '\$',
+                  element['qtn_requested'].toString(),
                   style: const TextStyle(color: Colors.white),
                 ),
               ),
             ),
             Expanded(
               child: Chip(
-                backgroundColor: Theme.of(ctx).colorScheme.secondary,
+                backgroundColor: Theme.of(ctx).primaryColor,
                 label: Text(
-                  element['qtn_received'].toString(),
+                  element['qtn_received'].toString() + '\$',
                   style: const TextStyle(color: Colors.white),
                 ),
               ),
