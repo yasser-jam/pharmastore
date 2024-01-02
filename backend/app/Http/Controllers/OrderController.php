@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Events\sent;
+use App\Models\Order;
 use App\Http\Requests\billingStatusRequest;
 use App\Http\Requests\statusRequest;
-use App\Models\Order;
 use App\Events\NewOrder;
 use App\Models\OrderItem;
 use Illuminate\Support\Facades\Gate;
@@ -58,7 +58,7 @@ class OrderController extends Controller
     return response()->json([
         "message"=> "the order has been deleted successfully",
     ],201);
-}
+}  
 
    /**
     * Update the status of an order.
@@ -89,7 +89,7 @@ class OrderController extends Controller
 
        return response()->json(['message' => 'Payment status updated']);
    }
-
+     
 
 
 //    public function __construct()

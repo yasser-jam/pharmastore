@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\CategoryCollection;
 use App\Models\Medcine;
 use App\Models\Category;
 use App\Models\Favourite;
@@ -13,6 +12,7 @@ use App\Http\Resources\MedcineResource;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\MedcineCollection;
 use App\Http\Requests\StoreMedcineRequest;
+use App\Http\Resources\CategoryCollection;
 use App\Http\Requests\UpdateMedcineRequest;
 
 class MedcineController extends Controller
@@ -55,7 +55,9 @@ class MedcineController extends Controller
      */
     public function store(StoreMedcineRequest $request)
     {
-       // dd(Auth::user());
+        if($request->hasFile('image')) {
+            $validatedData['image'] = $request->file('image')->store('images', 'public');
+        }
         $validatedData = $request->validated();
         $medcine = Medcine::create($validatedData);
         return new MedcineResource($medcine);
@@ -109,9 +111,17 @@ class MedcineController extends Controller
     //get favorites
     public function viewFav(){
         $user_id=Auth::id();
-        $fav=Favourite::where('user_id',$user_id)->get()->all();   
+        $fav=Favourite::where('user_id',$user_id)->get()->all(); 
         return $fav;    
     }
+
+    //remove from favorites
+    public function removeFav($medcineId){
+         $med=Favourite::where('medcine_id',$medcineId)->First();
+         $med->delete();
+         return response()->json(['message' => 'Medcine removed from favorites'],202);
+    }
+
     //get categores
     public function getCat(){
         return new CategoryCollection(Category::all());

@@ -14,11 +14,12 @@ class OrderItemsResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $medcines=$this->medcine()->get();
         return [
             "medcine_id"=>$this->medcine_id,
             'order_id'=>$this->order_id,
             'qtn_requested'=>$this->qtn_requested,
-            'qtn_received'=>$this->qtn_received,
+            "medcines"=> MedcineResource::collection($medcines)
         ];
     }
 }
