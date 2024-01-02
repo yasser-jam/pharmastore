@@ -46,7 +46,6 @@ class PharmaStore extends StatelessWidget {
         primaryColor: const Color.fromARGB(255, 26, 144, 148),
         colorScheme: const ColorScheme.light(
           secondary: Color.fromARGB(255, 226, 170, 85),
-          surface: Color.fromARGB(255, 145, 125, 235),
         ),
       ),
     );
