@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+// import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 import 'package:project/base/drawer/drawer_list.dart';
@@ -22,68 +22,112 @@ class HomeScreen extends StatelessWidget {
               child: const DrawerList(),
             ),
           ),
-          const Expanded(
+          Expanded(
             flex: 4,
             child: Scaffold(
               body: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
+                child: ListView(
                   children: [
-                    // First Row: Four Number Cards
-                    Row(
+                    Column(
                       children: [
-                        Expanded(
-                          child: NumberCard(
-                              label: 'Pharmacies',
-                              number: 42,
-                              icon: Icons.store,
-                              color: Color.fromARGB(255, 207, 234, 247),
-                              textColor: Colors.blue),
+                        // First Row: Four Number Cards
+                        const Row(
+                          children: [
+                            Expanded(
+                              child: NumberCard(
+                                  label: 'Pharmacies',
+                                  number: 42,
+                                  icon: Icons.store,
+                                  color: Color.fromARGB(255, 207, 234, 247),
+                                  textColor: Colors.blue),
+                            ),
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: NumberCard(
+                                label: 'Orders',
+                                number: 99,
+                                icon: Icons.telegram,
+                                color: Color.fromARGB(255, 221, 245, 193),
+                                textColor: Colors.green,
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: NumberCard(
+                                  label: 'Medicines',
+                                  number: 73,
+                                  icon: Icons.message,
+                                  color: Color.fromARGB(255, 247, 234, 216),
+                                  textColor: Colors.orange),
+                            ),
+                          ],
                         ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: NumberCard(
-                            label: 'Orders',
-                            number: 99,
-                            icon: Icons.telegram,
-                            color: Color.fromARGB(255, 221, 245, 193),
-                            textColor: Colors.green,
-                          ),
+
+                        const SizedBox(height: 16), // Spacer
+
+                        // Second Row: Two Charts
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Pharmacies Distribution',
+                                    style: TextStyle(
+                                        color: Theme.of(ctx).primaryColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  SizedBox(
+                                    height: 500,
+                                    child: ChartContainer(
+                                        title: 'Pharmacies Distribution',
+                                        color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 20),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Pharmacies Distribution',
+                                    style: TextStyle(
+                                        color: Theme.of(ctx).primaryColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  SizedBox(
+                                    height: 500,
+                                    child: ChartContainer(
+                                        title: 'Pharmacies Distribution',
+                                        color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: NumberCard(
-                              label: 'Medicines',
-                              number: 73,
-                              icon: Icons.message,
-                              color: Color.fromARGB(255, 247, 234, 216),
-                              textColor: Colors.orange),
-                        ),
+
+                        const SizedBox(height: 16), // Spacer
+
+                        // Third Row: Three Charts
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        //   children: [
+                        //     Expanded(child: MyChart(title: 'Chart 3')),
+                        //     Expanded(child: MyChart(title: 'Chart 4')),
+                        //     Expanded(child: MyChart(title: 'Chart 5')),
+                        //   ],
+                        // ),
                       ],
-                    ),
-
-                    SizedBox(height: 16), // Spacer
-
-                    // Second Row: Two Charts
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Expanded(child: MyChart(title: 'Chart 1')),
-                        Expanded(child: MyChart(title: 'Chart 2')),
-                      ],
-                    ),
-
-                    SizedBox(height: 16), // Spacer
-
-                    // Third Row: Three Charts
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    //   children: [
-                    //     Expanded(child: MyChart(title: 'Chart 3')),
-                    //     Expanded(child: MyChart(title: 'Chart 4')),
-                    //     Expanded(child: MyChart(title: 'Chart 5')),
-                    //   ],
-                    // ),
+                    )
                   ],
                 ),
               ),
@@ -95,76 +139,81 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class MyChart extends StatelessWidget {
+class ChartContainer extends StatelessWidget {
+  final Color color;
   final String title;
 
-  const MyChart({required this.title});
+  ChartContainer({
+    Key? key,
+    required this.title,
+    required this.color,
+  }) : super(key: key);
+
+  List<BarChartGroupData> barChartGroupData = [
+    BarChartGroupData(x: 1, barRods: [
+      BarChartRodData(
+          y: 5, colors: [Color(0xff43dde6), Color(0xff43dde6)], width: 20),
+    ]),
+    BarChartGroupData(x: 2, barRods: [
+      BarChartRodData(
+          y: 7, colors: [Color(0xff43dde6), Color(0xff43dde6)], width: 20),
+    ]),
+    BarChartGroupData(x: 3, barRods: [
+      BarChartRodData(
+          y: 10, colors: [Color(0xff43dde6), Color(0xff43dde6)], width: 20),
+    ]),
+    BarChartGroupData(x: 4, barRods: [
+      BarChartRodData(
+          y: 9, colors: [Color(0xff43dde6), Color(0xff43dde6)], width: 20),
+    ]),
+    BarChartGroupData(x: 5, barRods: [
+      BarChartRodData(
+          y: 7, colors: [Color(0xff43dde6), Color(0xff43dde6)], width: 20),
+    ]),
+    BarChartGroupData(x: 6, barRods: [
+      BarChartRodData(
+          y: 8, colors: [Color(0xff43dde6), Color(0xff43dde6)], width: 20),
+    ]),
+    BarChartGroupData(x: 7, barRods: [
+      BarChartRodData(
+          y: 5, colors: [Color(0xff43dde6), Color(0xff43dde6)], width: 20),
+    ]),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            title,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 8),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
+    return Center(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.95,
+        height: MediaQuery.of(context).size.width * 0.95 * 0.65,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(height: 20),
+            Expanded(
+                child: Container(
+              padding: EdgeInsets.only(top: 4),
               child: BarChart(
                 BarChartData(
-                  barGroups: [
-                    BarChartGroupData(
-                      x: 0,
-                      barRods: [
-                        BarChartRodData(y: 100, colors: [Colors.black]),
-                      ],
+                    maxY: 12,
+                    barGroups: barChartGroupData,
+                    gridData: FlGridData(
+                      show: false,
                     ),
-                    BarChartGroupData(
-                      x: 1,
-                      barRods: [
-                        BarChartRodData(y: 40, colors: [Colors.amber]),
-                      ],
-                    ),
-                    BarChartGroupData(
-                      x: 2,
-                      barRods: [
-                        BarChartRodData(y: 80, colors: [Colors.green]),
-                      ],
-                    ),
-                    BarChartGroupData(
-                      x: 3,
-                      barRods: [
-                        BarChartRodData(y: 40, colors: [Colors.blue]),
-                      ],
-                    ),
-                  ],
-                  titlesData: FlTitlesData(
-                    leftTitles: SideTitles(showTitles: true),
-                    bottomTitles: SideTitles(showTitles: true),
-                  ),
-                  borderData: FlBorderData(
-                    show: true,
-                  ),
-                  barTouchData: BarTouchData(
-                    touchTooltipData: BarTouchTooltipData(
-                      tooltipBgColor: Colors.blueAccent,
-                    ),
-                  ),
-                  gridData: FlGridData(show: false),
-                ),
+                    borderData: FlBorderData(
+                        border: const Border(
+                            top: BorderSide(color: Colors.black12),
+                            bottom: BorderSide(color: Colors.black12),
+                            left: BorderSide(color: Colors.black12),
+                            right: BorderSide(color: Colors.black12)))),
               ),
-            ),
-          ),
-        ],
+            ))
+          ],
+        ),
       ),
     );
   }
