@@ -21,46 +21,6 @@ class OrdersTable extends StatefulWidget {
 class _OrdersTableState extends State<OrdersTable> {
   _OrdersTableState();
 
-  void updatePayment(status, id) async {
-    try {
-      var url = Uri.http('localhost:8000', 'api/billingStatus/$id');
-      var response = await http.patch(url,
-          body: jsonEncode({"status": status == 'paid' ? 'unpaid' : 'paid'}),
-          headers: {
-            'Authorization': 'Bearer ' + document.cookie!.split('=')[1],
-            'Content-type': 'application/json'
-          });
-
-      // update table
-      setState(() async {
-        await widget.callback();
-      });
-    } finally {}
-  }
-
-  void updateStatus(status, id) async {
-    try {
-      var url = Uri.http('localhost:8000', 'api/orderStatus/$id');
-      var response = await http.patch(url,
-          body: jsonEncode({
-            'status': status == 'preparing'
-                ? 'sent'
-                : status == 'sent'
-                    ? 'received'
-                    : 'preparing'
-          }),
-          headers: {
-            'Authorization': 'Bearer ' + document.cookie!.split('=')[1],
-            'Content-type': 'application/json'
-          });
-
-      // update table
-      setState(() async {
-        await widget.callback();
-      });
-    } finally {}
-  }
-
   void removeOrder(id) async {
     try {
       var url = Uri.http('localhost:8000', 'api/orders/$id');
@@ -94,9 +54,6 @@ class _OrdersTableState extends State<OrdersTable> {
                 ),
               ),
               DataCell(
-                onTap: () {
-                  updateStatus(item['status'], item['id']);
-                },
                 Chip(
                   backgroundColor: item['status'] == 'sent'
                       ? Theme.of(ctx).colorScheme.secondary
@@ -110,9 +67,6 @@ class _OrdersTableState extends State<OrdersTable> {
                 ),
               ),
               DataCell(
-                onTap: () {
-                  updatePayment(item['billingstatus'], item['id']);
-                },
                 Chip(
                   backgroundColor: item['billingstatus'] == 'paid'
                       ? Theme.of(ctx).primaryColor
