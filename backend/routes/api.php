@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NotificationController;
 use App\Models\pharmacist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -38,4 +39,6 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('viewOrders',[OrderController::class,'viewAllOrders']);
     Route::patch('orderStatus/{orderId}',[OrderController::class,'updateStatus']);
     Route::patch('billingStatus/{orderId}',[OrderController::class,'updateBillingStatus']);
+    Route::get('/notifications',[NotificationController::Class,'getPharmacistNotifications']);
+    Route::get('/notifications',[NotificationController::Class,'getAdminNotifications']);
 });

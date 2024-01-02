@@ -3,16 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Events\sent;
+use App\Models\User;
 use App\Models\Order;
-use App\Http\Requests\billingStatusRequest;
-use App\Http\Requests\statusRequest;
 use App\Events\NewOrder;
 use App\Models\OrderItem;
+use App\Http\Requests\statusRequest;
+use App\Notifications\OrderNotification;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\OrderCollection;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Resources\MedcineCollection;
+use App\Http\Requests\billingStatusRequest;
+use App\Notifications\OrderStatusNotification;
 
 class OrderController extends Controller
 {  /**
@@ -33,6 +36,11 @@ class OrderController extends Controller
        }
        //call the new order event for listner
        event(new NewOrder($order));
+       $orderid = $order->id;
+       $storeOwner = User::where('isStoreOwner', true)->first();
+       $owner_id = $storeOwner->id;
+       $owner_id->notify(new OrderNotification($orderid));
+ 
        return response()->json(['message' => 'Order placed successfully']);
    }
 
@@ -65,14 +73,20 @@ class OrderController extends Controller
     */
    public function updateStatus($orderId,statusRequest $status)
    {
+      
        $order = Order::findOrFail($orderId);
        if($status->status === 'sent'){
            event(new sent($order));
        }
 
+
        $order = Order::findOrFail($orderId);
        $order->status = $status->status;
        $order->save();
+
+       $pharmacist_id = $order->pharmacy_id;
+       $pharmacist = User::where('id', $pharmacist_id)->first(); 
+       $pharmacist->notify(new OrderStatusNotification($order));
 
        return response()->json(['message' => 'Order status updated']);
    }
