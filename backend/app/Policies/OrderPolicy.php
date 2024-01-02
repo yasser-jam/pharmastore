@@ -37,7 +37,7 @@ class OrderPolicy
      */
     public function delete(User $user, Order $order): bool
     {
-        return $user->id==$order->user_id;
+        return $$user->isStoreOwner;
     }
     public function updateStatus(User $user, Order $order): bool
     {
