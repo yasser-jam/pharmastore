@@ -27,7 +27,7 @@ class UpdateMedcineRequest extends FormRequest
     {
         return [
             "sciName"=>['sometimes','required'],
-            "useName"=>['sometimes','required', 'unique:medcines'],
+            "useName"=>['sometimes','required'],
             "companyName"=>['sometimes', 'required'],
             "qtn"=>['sometimes', 'required'],
             "expiredDate"=>['sometimes', 'required'],
