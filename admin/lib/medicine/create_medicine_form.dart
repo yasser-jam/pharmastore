@@ -77,9 +77,10 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
       }
 
       // push router to medicines page
+      // ignore: use_build_context_synchronously
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => MedScreen()),
+        MaterialPageRoute(builder: (context) => const MedScreen()),
       );
     } finally {
       setState(() {
