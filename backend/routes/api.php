@@ -34,6 +34,7 @@ Route::post('register',[PharmacistController::class,'register']);
 Route::post('login',[PharmacistController::class,'login']);
 Route::post('webLogin',[PharmacistController::class,'webLogin']);
 Route::get('category',[MedcineController::class,'getCat']);
+
 Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('medcines', MedcineController::class);
     Route::post('/medcines/{medcineId}/add-to-favorites', [MedcineController::class, 'addToFavorites']);

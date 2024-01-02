@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('password');
             $table->string('email')->unique();
+            $table->dateTime('email_verified_at')->nullable();
             $table->rememberToken();
             $table->boolean('isStoreOwner')->default(false);
             $table->timestamps();
