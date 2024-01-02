@@ -26,12 +26,8 @@ class UpdateMedcineRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "enSciName"=>['sometimes','required'],
-            "arSciName"=>['sometimes',  'required'],
-            "enUseName"=>['sometimes','required', 'unique:medcines'],
-            "arUseName"=>['sometimes','required'],
-            "enCatigory"=>['sometimes', 'required'],
-            "arCatigory"=>['sometimes','required'],
+            "sciName"=>['sometimes','required'],
+            "useName"=>['sometimes','required', 'unique:medcines'],
             "companyName"=>['sometimes', 'required'],
             "qtn"=>['sometimes', 'required'],
             "expiredDate"=>['sometimes', 'required'],

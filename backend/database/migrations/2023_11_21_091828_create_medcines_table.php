@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer("price");
             $table->boolean("show")->default(false);
             $table->text("description")->nullable();
+            $table->string('imagePath');
             $table->timestamps();
         });
     }

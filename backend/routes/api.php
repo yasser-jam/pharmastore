@@ -29,6 +29,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('medcines', MedcineController::class);
     Route::post('/medcines/{medcineId}/add-to-favorites', [MedcineController::class, 'addToFavorites']);
     Route::get('/favourites',[MedcineController::class,'viewFav']);
+    Route::delete('/favourites/{medcineId}',[MedcineController::class,'removeFav']);
 });
 Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('orders', OrderController::class);
