@@ -39,7 +39,8 @@ class OrderController extends Controller
        $orderid = $order->id;
        $storeOwner = User::where('isStoreOwner', true)->first();
        $owner_id = $storeOwner->id;
-       $owner_id->notify(new OrderNotification($orderid));
+       $pharmacist=User::find($owner_id);
+       $notafication=new OrderNotification($orderid);
  
        return response()->json(['message' => 'Order placed successfully']);
    }
