@@ -114,7 +114,8 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
     const options = [
       {'title': 'Pain Reliever', 'value': '1'},
       {'title': 'Stimulant', 'value': '2'},
-      {'title': 'Antibiotic', 'value': '3'},
+      {'title': 'Sedative', 'value': '3'},
+      {'title': 'Antibiotic', 'value': '4'},
     ];
 
     return Column(children: [
