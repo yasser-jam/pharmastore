@@ -33,6 +33,22 @@ class DrawerList extends StatelessWidget {
             text: 'Orders', icon: 0xf0147, link: '/orders', detailsPage: false),
         const DrawerItem(
             text: 'Categories', icon: 0xe148, link: '', detailsPage: false),
+        SizedBox(height: 400),
+        ListTile(
+          onTap: () {
+            Navigator.pushNamed(ctx, '/login');
+          },
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 0, horizontal: 30),
+          leading: const Icon(
+            Icons.login,
+            color: Colors.white,
+          ),
+          title: Text(
+            'Log out',
+            style: const TextStyle(color: Colors.white),
+          ),
+        ),
       ],
     );
   }

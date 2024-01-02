@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 
+import 'order_dialog.dart';
+
 class OrdersTable extends StatefulWidget {
   const OrdersTable({super.key, required this.data, required this.callback});
 
@@ -19,46 +21,6 @@ class OrdersTable extends StatefulWidget {
 class _OrdersTableState extends State<OrdersTable> {
   _OrdersTableState();
 
-  void updatePayment(status, id) async {
-    try {
-      var url = Uri.http('localhost:8000', 'api/billingStatus/$id');
-      var response = await http.patch(url,
-          body: jsonEncode({"status": status == 'paid' ? 'unpaid' : 'paid'}),
-          headers: {
-            'Authorization': 'Bearer ' + document.cookie!.split('=')[1],
-            'Content-type': 'application/json'
-          });
-
-      // update table
-      setState(() async {
-        await widget.callback();
-      });
-    } finally {}
-  }
-
-  void updateStatus(status, id) async {
-    try {
-      var url = Uri.http('localhost:8000', 'api/orderStatus/$id');
-      var response = await http.patch(url,
-          body: jsonEncode({
-            'status': status == 'preparing'
-                ? 'sent'
-                : status == 'sent'
-                    ? 'received'
-                    : 'preparing'
-          }),
-          headers: {
-            'Authorization': 'Bearer ' + document.cookie!.split('=')[1],
-            'Content-type': 'application/json'
-          });
-
-      // update table
-      setState(() async {
-        await widget.callback();
-      });
-    } finally {}
-  }
-
   void removeOrder(id) async {
     try {
       var url = Uri.http('localhost:8000', 'api/orders/$id');
@@ -68,13 +30,13 @@ class _OrdersTableState extends State<OrdersTable> {
       });
 
       // update table
-      setState(() async {
-        await widget.callback();
+      setState(() {
+        widget.callback();
       });
     } finally {}
   }
 
-  dynamic getRows() {
+  dynamic getRows(ctx) {
     List<DataRow> rows = [];
     widget.data.forEach(
       (item) {
@@ -92,15 +54,12 @@ class _OrdersTableState extends State<OrdersTable> {
                 ),
               ),
               DataCell(
-                onTap: () {
-                  updateStatus(item['status'], item['id']);
-                },
                 Chip(
                   backgroundColor: item['status'] == 'sent'
-                      ? Color.fromARGB(255, 219, 216, 110)
+                      ? Theme.of(ctx).colorScheme.secondary
                       : item['status'] == 'received'
-                          ? Color.fromARGB(255, 26, 144, 148)
-                          : Color.fromARGB(255, 145, 125, 235),
+                          ? Theme.of(ctx).primaryColor
+                          : Theme.of(ctx).colorScheme.surface,
                   label: Text(
                     item['status'],
                     style: const TextStyle(color: Colors.white),
@@ -108,28 +67,36 @@ class _OrdersTableState extends State<OrdersTable> {
                 ),
               ),
               DataCell(
-                onTap: () {
-                  updatePayment(item['billingstatus'], item['id']);
-                },
                 Chip(
                   backgroundColor: item['billingstatus'] == 'paid'
-                      ? Color.fromARGB(255, 26, 144, 148)
-                      : Color.fromARGB(255, 226, 170, 85),
+                      ? Theme.of(ctx).primaryColor
+                      : Theme.of(ctx).colorScheme.secondary,
                   label: Text(
                     item['billingstatus'],
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
               ),
               DataCell(
                 Row(
                   children: [
-                    // IconButton.filledTonal(
-                    //     icon: const Icon(Icons.check),
-                    //     color: Colors.blue,
-                    //     iconSize: 20,
-                    //     splashRadius: 20,
-                    //     onPressed: () {}),
+                    IconButton.filledTonal(
+                        icon: const Icon(Icons.edit),
+                        color: Colors.blue,
+                        iconSize: 20,
+                        splashRadius: 20,
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return OrderDialog(
+                                  order: item,
+                                  callback: () {
+                                    widget.callback();
+                                  });
+                            },
+                          );
+                        }),
                     IconButton.filledTonal(
                       icon: const Icon(Icons.delete),
                       color: Colors.red[400],
@@ -153,7 +120,7 @@ class _OrdersTableState extends State<OrdersTable> {
 
   @override
   build(ctx) {
-    getRows();
+    getRows(ctx);
     return SizedBox(
       width: double.infinity,
       child: DataTable(columns: const [
@@ -161,7 +128,7 @@ class _OrdersTableState extends State<OrdersTable> {
         DataColumn(label: Text('status')),
         DataColumn(label: Text('billingstatus')),
         DataColumn(label: Text('')),
-      ], rows: getRows()),
+      ], rows: getRows(ctx)),
     );
   }
 }
