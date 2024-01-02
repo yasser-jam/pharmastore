@@ -45,9 +45,9 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
       var url;
 
       if (mode == 'update') {
-        url = Uri.http('localhost:8000', 'api/medcines/$id');
+        url = Uri.http('192.168.59.54:8000', 'api/medcines/$id');
       } else {
-        url = Uri.http('localhost:8000', 'api/medcines');
+        url = Uri.http('192.168.59.54:8000', 'api/medcines');
       }
 
       var body = {
@@ -141,53 +141,22 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
             },
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
-              labelText: 'Scientific Name (en)',
+              labelText: 'Scientific Name',
             ),
           )),
           SizedBox(width: 10),
           Expanded(
             child: TextFormField(
-              initialValue: data != null ? data['sciName'] : '',
-              onChanged: (value) {
-                editValue(value, 'sciName');
-              },
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Scientific Name (ar)',
-              ),
-            ),
-          )
-        ],
-      ),
-      Divider(height: 30),
-      Row(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Expanded(
-            child: TextFormField(
               initialValue: data != null ? data['useName'] : '',
               onChanged: (value) {
                 editValue(value, 'useName');
               },
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'Used Name (en)',
+                labelText: 'Used Name',
               ),
             ),
           ),
-          SizedBox(width: 10),
-          Expanded(
-            child: TextFormField(
-              initialValue: data != null ? data['useName'] : '',
-              onChanged: (value) {
-                editValue(value, 'useName');
-              },
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Used Name (ar)',
-              ),
-            ),
-          )
         ],
       ),
       SizedBox(height: 30),
