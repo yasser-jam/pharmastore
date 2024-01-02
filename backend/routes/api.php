@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ReportsController;
 use App\Models\pharmacist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,8 @@ use App\Http\Controllers\PharmacistController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+Route::get('reports',[ReportsController::class,'getReport']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
