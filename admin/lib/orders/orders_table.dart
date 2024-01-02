@@ -30,8 +30,8 @@ class _OrdersTableState extends State<OrdersTable> {
       });
 
       // update table
-      setState(() async {
-        await widget.callback();
+      setState(() {
+        widget.callback();
       });
     } finally {}
   }

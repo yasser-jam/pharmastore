@@ -32,7 +32,7 @@ class OrderDialogState extends State<OrderDialog> {
           child: Row(children: [
             Expanded(
               child: Text(
-                element['medicine_id'].toString(),
+                element['medcines'][0]['sciName'].toString(),
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -52,7 +52,7 @@ class OrderDialogState extends State<OrderDialog> {
               child: Chip(
                 backgroundColor: Theme.of(ctx).primaryColor,
                 label: Text(
-                  element['qtn_received'].toString() + '\$',
+                  element['medcines'][0]['price'].toString() + '\$',
                   style: const TextStyle(color: Colors.white),
                 ),
               ),
