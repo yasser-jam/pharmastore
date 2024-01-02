@@ -18,7 +18,7 @@ class LoginScreen extends StatelessWidget {
 
   void login(dynamic ctx) async {
     try {
-      var url = Uri.http('localhost:8000', 'api/webLogin');
+      var url = Uri.http('192.168.1.10:8000', 'api/webLogin');
       var response = await http.post(
         url,
         body: {'phoneNumber': phoneNumber, 'password': password},

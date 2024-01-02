@@ -45,9 +45,9 @@ class _CreateMedicineFormState extends State<CreateMedicineForm> {
       var url;
 
       if (mode == 'update') {
-        url = Uri.http('192.168.59.54:8000', 'api/medcines/$id');
+        url = Uri.http('192.168.1.10:8000', 'api/medcines/$id');
       } else {
-        url = Uri.http('192.168.59.54:8000', 'api/medcines');
+        url = Uri.http('192.168.1.10:8000', 'api/medcines');
       }
 
       var body = {

@@ -1,14 +1,35 @@
 import 'package:flutter/material.dart';
-// import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:fl_chart/fl_chart.dart';
 
 import 'package:project/base/drawer/drawer_list.dart';
 import 'package:project/reports/NumberCard.dart';
+import 'package:project/base/base_chart.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  HomeScreen({super.key});
+
   static const String route = '/';
 
-  HomeScreen({super.key});
+  @override
+  State createState() {
+    return HomeScreenState();
+  }
+}
+
+class HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    print('init');
+  }
+
+  var data = [
+    {'x': '1', 'y': '5'},
+    {'x': '2', 'y': '7'},
+    {'x': '3', 'y': '9'},
+    {'x': '4', 'y': '12'},
+    {'x': '5', 'y': '10'},
+    {'x': '6', 'y': '4'},
+    {'x': '7', 'y': '1'},
+  ];
 
   @override
   build(BuildContext ctx) {
@@ -85,7 +106,8 @@ class HomeScreen extends StatelessWidget {
                                     height: 500,
                                     child: ChartContainer(
                                         title: 'Pharmacies Distribution',
-                                        color: Colors.white),
+                                        color: Colors.white,
+                                        data: data),
                                   ),
                                 ],
                               ),
@@ -107,7 +129,8 @@ class HomeScreen extends StatelessWidget {
                                     height: 500,
                                     child: ChartContainer(
                                         title: 'Pharmacies Distribution',
-                                        color: Colors.white),
+                                        color: Colors.white,
+                                        data: data),
                                   ),
                                 ],
                               ),
@@ -134,86 +157,6 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class ChartContainer extends StatelessWidget {
-  final Color color;
-  final String title;
-
-  ChartContainer({
-    Key? key,
-    required this.title,
-    required this.color,
-  }) : super(key: key);
-
-  List<BarChartGroupData> barChartGroupData = [
-    BarChartGroupData(x: 1, barRods: [
-      BarChartRodData(
-          y: 5, colors: [Color(0xff43dde6), Color(0xff43dde6)], width: 20),
-    ]),
-    BarChartGroupData(x: 2, barRods: [
-      BarChartRodData(
-          y: 7, colors: [Color(0xff43dde6), Color(0xff43dde6)], width: 20),
-    ]),
-    BarChartGroupData(x: 3, barRods: [
-      BarChartRodData(
-          y: 10, colors: [Color(0xff43dde6), Color(0xff43dde6)], width: 20),
-    ]),
-    BarChartGroupData(x: 4, barRods: [
-      BarChartRodData(
-          y: 9, colors: [Color(0xff43dde6), Color(0xff43dde6)], width: 20),
-    ]),
-    BarChartGroupData(x: 5, barRods: [
-      BarChartRodData(
-          y: 7, colors: [Color(0xff43dde6), Color(0xff43dde6)], width: 20),
-    ]),
-    BarChartGroupData(x: 6, barRods: [
-      BarChartRodData(
-          y: 8, colors: [Color(0xff43dde6), Color(0xff43dde6)], width: 20),
-    ]),
-    BarChartGroupData(x: 7, barRods: [
-      BarChartRodData(
-          y: 5, colors: [Color(0xff43dde6), Color(0xff43dde6)], width: 20),
-    ]),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.95,
-        height: MediaQuery.of(context).size.width * 0.95 * 0.65,
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(height: 20),
-            Expanded(
-                child: Container(
-              padding: EdgeInsets.only(top: 4),
-              child: BarChart(
-                BarChartData(
-                    maxY: 12,
-                    barGroups: barChartGroupData,
-                    gridData: FlGridData(
-                      show: false,
-                    ),
-                    borderData: FlBorderData(
-                        border: const Border(
-                            top: BorderSide(color: Colors.black12),
-                            bottom: BorderSide(color: Colors.black12),
-                            left: BorderSide(color: Colors.black12),
-                            right: BorderSide(color: Colors.black12)))),
-              ),
-            ))
-          ],
-        ),
       ),
     );
   }

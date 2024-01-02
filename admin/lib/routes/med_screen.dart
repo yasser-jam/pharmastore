@@ -47,7 +47,7 @@ class _MedScreenState extends State<MedScreen> {
         'category_id[eq]': catId ?? '',
       };
 
-      var url = Uri.http('localhost:8000', 'api/medcines', queryParameters);
+      var url = Uri.http('192.168.1.10:8000', 'api/medcines', queryParameters);
 
       var response = await http.get(url, headers: {
         'Authorization': 'Bearer ' + document.cookie!.split('=')[1]
