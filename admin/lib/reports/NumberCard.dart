@@ -48,7 +48,7 @@ class NumberCard extends StatelessWidget {
                 number,
                 style: TextStyle(
                     color: textColor,
-                    fontSize: 28,
+                    fontSize: 24,
                     fontWeight: FontWeight.bold),
               ),
             ],
