@@ -15,7 +15,7 @@ class ChartContainer extends StatelessWidget {
     List<BarChartGroupData> ls = [];
 
     this.data.forEach((element) {
-      ls.add(BarChartGroupData(x: int.parse(element['y']), barRods: [
+      ls.add(BarChartGroupData(x: int.parse(element['x']), barRods: [
         BarChartRodData(
             y: double.parse(element['y']),
             colors: [Color(0xff43dde6), Color(0xff43dde6)],
@@ -45,7 +45,6 @@ class ChartContainer extends StatelessWidget {
               padding: EdgeInsets.only(top: 4),
               child: BarChart(
                 BarChartData(
-                    maxY: 12,
                     barGroups: getData(),
                     gridData: FlGridData(
                       show: false,

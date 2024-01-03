@@ -20,7 +20,7 @@ class MedicineTableState extends State<MedicineTable> {
 
   dynamic delete(id) async {
     try {
-      var url = Uri.http('192.168.1.10:8000', 'api/medcines/' + id);
+      var url = Uri.http('192.168.208.54:8000', 'api/medcines/' + id);
 
       // start loader
       setState(() {

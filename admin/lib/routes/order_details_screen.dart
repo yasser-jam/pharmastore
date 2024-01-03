@@ -29,7 +29,7 @@ class OrderDetailsScreenState extends State<OrderDetailsScreen> {
     try {
       loading = true;
 
-      var url = Uri.http('192.168.1.10:8000', 'api/viewOrders');
+      var url = Uri.http('192.168.208.54:8000', 'api/viewOrders');
 
       var response = await http.get(url, headers: {
         'Authorization': 'Bearer ' + document.cookie!.split('=')[1]

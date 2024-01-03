@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class NumberCard extends StatelessWidget {
   final String label;
-  final int number;
+  final String number;
   final Color color;
   final Color textColor;
   final IconData icon;
@@ -45,7 +45,7 @@ class NumberCard extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                number.toString(),
+                number,
                 style: TextStyle(
                     color: textColor,
                     fontSize: 28,
