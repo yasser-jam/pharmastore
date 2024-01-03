@@ -85,9 +85,9 @@ class OrderController extends Controller
        $order->status = $status->status;
        $order->save();
 
-       $pharmacist_id = $order->pharmacy_id;
+       $pharmacist_id = $order->user_id;
        $pharmacist = User::where('id', $pharmacist_id)->first(); 
-       $pharmacist->notify(new OrderStatusNotification($order));
+       //$pharmacist->notify(new OrderStatusNotification($order));
 
        return response()->json(['message' => 'Order status updated']);
    }
