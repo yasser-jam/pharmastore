@@ -23,7 +23,7 @@ class _OrdersTableState extends State<OrdersTable> {
 
   void removeOrder(id) async {
     try {
-      var url = Uri.http('192.168.208.54:8000', 'api/orders/$id');
+      var url = Uri.http('192.168.175.168:8000', 'api/orders/$id');
       var response = await http.delete(url, headers: {
         'Authorization': 'Bearer ' + document.cookie!.split('=')[1],
         'Content-type': 'application/json'
@@ -59,7 +59,11 @@ class _OrdersTableState extends State<OrdersTable> {
                       ? Theme.of(ctx).colorScheme.secondary
                       : item['status'] == 'received'
                           ? Theme.of(ctx).primaryColor
-                          : Theme.of(ctx).colorScheme.surface,
+                          : item['status'] == 'pending'
+                              ? Colors.blueAccent
+                              : item['status'] == 'preparing'
+                                  ? Colors.amber
+                                  : Theme.of(ctx).colorScheme.surface,
                   label: Text(
                     item['status'],
                     style: const TextStyle(color: Colors.white),

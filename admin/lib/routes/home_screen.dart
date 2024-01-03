@@ -26,13 +26,13 @@ class HomeScreenState extends State<HomeScreen> {
 
   void getReport() async {
     try {
-      var url = Uri.http('192.168.208.54:8000', 'api/reports');
+      var url = Uri.http('192.168.175.168:8000', 'api/reports');
 
       var response = await http.get(url, headers: {
         'Authorization': 'Bearer ' + document.cookie!.split('=')[1]
       });
 
-      var repUrl = Uri.http('192.168.208.54:8000', 'api/monthlyReport');
+      var repUrl = Uri.http('192.168.175.168:8000', 'api/monthlyReport');
 
       var res = await http.get(repUrl, headers: {
         'Authorization': 'Bearer ' + document.cookie!.split('=')[1]

@@ -73,7 +73,7 @@ class OrderDialogState extends State<OrderDialog> {
   void updatePayment() async {
     try {
       var url = Uri.http(
-          '192.168.208.54:8000', 'api/billingStatus/${widget.order['id']}');
+          '192.168.175.168:8000', 'api/billingStatus/${widget.order['id']}');
       var response = await http.patch(url,
           body: jsonEncode({"status": widget.order['billingstatus']}),
           headers: {
@@ -86,7 +86,7 @@ class OrderDialogState extends State<OrderDialog> {
   void updateStatus() async {
     try {
       var url = Uri.http(
-          '192.168.208.54:8000', 'api/orderStatus/${widget.order['id']}');
+          '192.168.175.168:8000', 'api/orderStatus/${widget.order['id']}');
       var response = await http.patch(url,
           body: jsonEncode({'status': widget.order['status']}),
           headers: {
@@ -99,6 +99,7 @@ class OrderDialogState extends State<OrderDialog> {
   @override
   Widget build(BuildContext ctx) {
     const statusOptions = [
+      {'value': 'pending', 'title': 'Pending'},
       {'value': 'preparing', 'title': 'Preparing'},
       {'value': 'sent', 'title': 'Sent'},
       {'value': 'received', 'title': 'Received'}

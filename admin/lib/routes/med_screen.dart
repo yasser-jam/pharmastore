@@ -48,7 +48,7 @@ class _MedScreenState extends State<MedScreen> {
       };
 
       var url =
-          Uri.http('192.168.208.54:8000', 'api/medcines', queryParameters);
+          Uri.http('192.168.175.168:8000', 'api/medcines', queryParameters);
 
       var response = await http.get(url, headers: {
         'Authorization': 'Bearer ' + document.cookie!.split('=')[1]
