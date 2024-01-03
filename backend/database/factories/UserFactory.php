@@ -25,7 +25,7 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => bcrypt('12345678'),
             'phoneNumber'=>$ph,
             'address'=>fake()->address(),
             'isStoreOwner'=>false
