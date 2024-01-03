@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
             'name' => 'Hisham Alzain',
             'password' => bcrypt('12345678'),
             'isStoreOwner'=>True,
-            'phoneNumber'=>"0931465737",
+            'phoneNumber'=>"0993544811",
             'email' => 'manger@gmail.com',
             "address"=>"damascus"
             // Add other user attributes as needed

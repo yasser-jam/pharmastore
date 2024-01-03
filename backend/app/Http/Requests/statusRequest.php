@@ -24,7 +24,7 @@ class statusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "status"=>['required','in:preparing,sent,received']
+            "status"=>['required','in:pending,preparing,sent,received']
         ];
     }
     protected function failedValidation(Validator $validator)

@@ -59,9 +59,12 @@ class ReportsController extends Controller
                 } 
             }
         }
+        $months=['1','2','3','4','5','6','7','8','9','10','11','12'];
+        $array=array_combine($months,$monthSales);
+        $arr=array_combine($months,$noMed);
         return response()->json([
-            "Monthly_Sales_warehouse"=>$monthSales,
-            "Monthly_No_Med_Sold"=>$noMed
+            "Monthly_Sales_warehouse"=>$array,
+            "Monthly_No_Med_Sold"=>$arr
         ]);
     }
 }
